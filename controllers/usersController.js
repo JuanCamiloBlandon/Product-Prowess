@@ -1,17 +1,13 @@
 const { response } = require('express');
 const User = require('../models/User');
-
 const jwt = require('jsonwebtoken');
 
 
+
 const createUser = async (req, res = response) => {
-  const { username, email, password, bio } = req.body
+  const { username, email, password, bio, avatar } = req.body
 
   const secret = process.env.SECRET;
-
-  const token = jwt.sign({
-    username, email, password, username, bio
-  }, secret, { expiresIn: '1h' });
 
   try {
     let user = await User.findOne({ email });
@@ -24,13 +20,21 @@ const createUser = async (req, res = response) => {
         }
       });
     }
-    const avatar = "";
+    
+    let avatarUrl = "";
+    if (avatar) {
+      avatarUrl = avatar;
+    }
     const createdAt = new Date();
     const updatedAt = new Date();
 
-    user = new User({ username, email, password, bio, avatar, createdAt, updatedAt });
-
+    user = new User({ username, email, password, bio, avatar: avatarUrl, createdAt, updatedAt });
+    user.password = await user.encryptPassword(user.password);
     await user.save();
+
+    const token = jwt.sign({
+      id: user._id
+    }, secret, { expiresIn: '1h' });
 
     res.json({
       ok: true,
@@ -39,7 +43,6 @@ const createUser = async (req, res = response) => {
         id: user.id, username: user.username, email: user.email, bio: user.bio,
         avatar: user.avatar, createdAt: user.createdAt, updatedAt: user.updatedAt,
       },
-      token
     });
   } catch (error) {
     console.error('[ERROR]', error);
@@ -53,15 +56,29 @@ const createUser = async (req, res = response) => {
   }
 };
 
+
 const loginUser = async (req, res = response, next) => {
   const { email, password } = req.body
+  const secret = process.env.SECRET;
 
   const user = await User.findOne({ email });
 
-  let data = null;
-
   if (!user) {
-    return res.status(400).json({
+    return res.status(404).json({
+      ok: false,
+      error: {
+        message: 'You are not registered'
+      }
+    });
+  }
+
+  const validPassword = await user.comparePassword(
+    password,
+    user.password
+  );
+
+  if (!validPassword) {
+    return res.status(401).json({
       ok: false,
       error: {
         message: 'Wrong Credentials'
@@ -69,51 +86,18 @@ const loginUser = async (req, res = response, next) => {
     });
   }
 
-  const token = req.headers.authorization
+  const token = jwt.sign({
+    id: user._id
+  }, secret, { expiresIn: '1h' });
 
-  if (!token){
-    return res.status(401).json({
-      ok: false,
-      error: {
-        message: 'Missing Token'
-      }
-    })
-  }
-
-  jwt.verify(token, 'oculto', (error, decoded) => {
-    console.log(token)
-    if (error) {
-      return res.status(403).json({
-        ok: false,
-        error: {
-          message: 'Invalid Token'
-        }
-      })
-    };
-    data = decoded
-    next();
-  })
-
-
-  try {
-    res.status(200).json({
-      ok: true,
-      uid: user.id,
-      email: user.email,
-      data: data
-    });
-
-  } catch (error) {
-    console.error('[ERROR]', error);
-
-    res.status(500).json({
-      ok: false,
-      error: {
-        message: 'Something went worng, please contact to admin'
-      }
-    });
-  }
+  res.status(200).json({
+    ok: true,
+    message: "you are logged in",
+    token,
+    duration: "1 hour"
+  });
 }
+
 
 const renewToken = (req, res = response) => {
   const { token } = req.body;

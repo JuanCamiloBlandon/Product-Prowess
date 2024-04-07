@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types: { ObjectId } } = require('mongoose');
 
 const ProdutsSchema = Schema({
     productName: {
@@ -22,7 +22,7 @@ const ProdutsSchema = Schema({
     },
 
     userId: {
-        type: isObjectId,
+        type: ObjectId,
         require: true
     },
 

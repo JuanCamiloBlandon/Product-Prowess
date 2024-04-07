@@ -17,6 +17,7 @@ dbConnection()
 
 // app routes
 app.use('/api/v1', require('./routes/auth') );
+app.use('/api/v1', require('./routes/productsRoute') );
 
 
 app.listen(APP_PORT, () => {
