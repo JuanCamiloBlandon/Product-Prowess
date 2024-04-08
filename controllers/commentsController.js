@@ -27,7 +27,6 @@ const createComment = async (req, res = response) => {
         try {
             existingProduct = await Products.findById(productId);
         } catch (error) {
-            // Handle the error if the product is not found
             return res.status(404).json({
                 ok: false,
                 error: {
