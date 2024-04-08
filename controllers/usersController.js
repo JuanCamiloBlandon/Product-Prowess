@@ -1,13 +1,12 @@
 const { response } = require('express');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const secret = process.env.SECRET;
 
 
 
 const createUser = async (req, res = response) => {
   const { username, email, password, bio, avatar } = req.body
-
-  const secret = process.env.SECRET;
 
   try {
     let user = await User.findOne({ email });
@@ -59,8 +58,6 @@ const createUser = async (req, res = response) => {
 
 const loginUser = async (req, res = response, next) => {
   const { email, password } = req.body
-  const secret = process.env.SECRET;
-
   const user = await User.findOne({ email });
 
   if (!user) {

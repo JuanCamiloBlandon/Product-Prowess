@@ -1,14 +1,13 @@
 const { response } = require('express');
-const User = require('../models/Products');
 const jwt = require('jsonwebtoken');
 const Products = require('../models/Products');
 const mongoose = require('mongoose');
+const secret = process.env.SECRET;
 
 const createProduct = async (req, res = response) => {
     const { productName, description, url, tags} = req.body;
     let token = req.headers.authorization;
-    const secret = process.env.SECRET;
-    let idUser = null;
+    let idUser;
 
     if (!token){
         return res.status(401).json({
@@ -21,43 +20,55 @@ const createProduct = async (req, res = response) => {
 
     token = token.split(' ')[1];
 
-    jwt.verify(token, secret, (error, decoded) => {
-        if (error) {
-            return res.status(403).json({
+    try {
+        jwt.verify(token, secret, (error, decoded) => {
+            if (error) {
+                throw new Error('Invalid Token');
+            }
+            idUser = decoded.id;
+        });
+    } catch (error) {
+        return res.status(403).json({
+            ok: false,
+            error: {
+                message: error.message
+            }
+        });
+    }
+
+    try {
+        const existingProduct = await Products.findOne({ productName, userId: idUser });
+
+        if (existingProduct) {
+            return res.status(400).json({
                 ok: false,
                 error: {
-                    message: 'Invalid Token'
+                    message: 'Product already exists'
                 }
             });
         }
-        idUser = decoded.id;
-    });
 
-    const existingProduct = await Products.findOne({ productName, userId: idUser });
+        const userIdObject = new mongoose.Types.ObjectId(idUser);
+        const createdAt = new Date();
+        const updatedAt = new Date();
 
-    if (existingProduct) {
-        return res.status(400).json({
-          ok: false,
-          error: {
-            message: 'Product already exists'
-          }
+        const product = new Products({ productName, description, url, tags, userId: userIdObject, createdAt, updatedAt });
+        await product.save();
+
+        return res.status(200).json({
+            ok: true,
+            error: {
+                message: 'Successfully created product'
+            }
         });
-      }
-
-    const userIdObject = new mongoose.Types.ObjectId(idUser);
-    const createdAt = new Date();
-    const updatedAt = new Date();
-
-    product = new Products({ productName, description, url, tags, userId: userIdObject, createdAt, updatedAt });
-    await product.save();
-
-    res.status(200).json({
-        ok: true,
-        error: {
-            message: 'successfully created product'
-        }
-    });
-   
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            error: {
+                message: 'Something went worng, please contact to admin'
+            }
+        });
+    }
 };
 
 module.exports = {
