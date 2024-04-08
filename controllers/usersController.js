@@ -31,10 +31,6 @@ const createUser = async (req, res = response) => {
     user.password = await user.encryptPassword(user.password);
     await user.save();
 
-    const token = jwt.sign({
-      id: user._id
-    }, secret, { expiresIn: '1h' });
-
     res.json({
       ok: true,
       msg: 'registered',
