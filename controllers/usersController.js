@@ -51,6 +51,51 @@ const createUser = async (req, res = response) => {
   }
 };
 
+const updateUser = async (req, res = response) =>{
+  const userId = req.params.id;
+  const {username, bio, avatar} = req.body
+
+  try {
+    let user = await User.findById(userId);
+
+    if(!user){
+      return res.status(404).json({
+        ok: false,
+        error: {
+          message: 'User not found'
+        }
+      });
+    }
+
+    user.username = username,
+    user.bio = bio,
+    user.avatar = avatar
+
+    await user.save();
+
+    res.json({
+      ok: true,
+      msg: 'User data updated successfuly',
+      user: {
+        id: user.id,
+        username: user.username,
+        bio: user.bio,
+        avatar: user.avatar,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      }
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      error:{
+        message: 'Something went wrong, please contact the admin'
+      }
+
+    });
+  }
+};
 
 const loginUser = async (req, res = response, next) => {
   const { email, password } = req.body
@@ -105,5 +150,6 @@ const renewToken = (req, res = response) => {
 module.exports = {
   createUser,
   loginUser,
-  renewToken
+  renewToken,
+  updateUser
 };

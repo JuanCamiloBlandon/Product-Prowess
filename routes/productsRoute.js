@@ -6,7 +6,6 @@ const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validateFields');
 
 
-// Create a new producto
 router.post(
   '/createProduct', 
   [
