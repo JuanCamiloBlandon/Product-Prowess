@@ -44,7 +44,7 @@ const createComment = async (req, res = response) => {
             });
         }
 
-        const userIdObject = new mongoose.Types.ObjectId(idUser);
+        const userIdObject = mongoose.Types.ObjectId.createFromTime(idUser);
         const createdAt = new Date();
         const updatedAt = new Date();
 

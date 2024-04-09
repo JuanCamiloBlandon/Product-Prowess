@@ -1,13 +1,8 @@
 const { response } = require('express');
 const User = require('../models/User');
+const { generateToken, verifyToken} = require('./tokenController');
 const jwt = require('jsonwebtoken');
 const secret = process.env.SECRET;
-
-
-const generateToken = (userId) => {
-  const token = jwt.sign({ id: userId }, secret, { expiresIn: '1h' });
-  return token;
-};
 
 const createUser = async (req, res = response) => {
   const { username, email, password, bio, avatar } = req.body
@@ -58,47 +53,62 @@ const createUser = async (req, res = response) => {
 const updateUser = async (req, res = response) =>{
   const userId = req.params.id;
   const {username, bio, avatar} = req.body
+  let token = req.headers.authorization;
+
+  if (!token) {
+      return res.status(401).json({
+          ok: false,
+          error: {
+              message: 'Missing Token'
+          }
+      });
+  }
 
   try {
-    let user = await User.findById(userId);
+      token = token.split(' ')[1];
+      const decodedToken  = await verifyToken(token, secret);
 
-    if(!user){
-      return res.status(404).json({
-        ok: false,
-        error: {
-          message: 'User not found'
+      const user = await User.findById(userId);
+
+      if(!user){
+        return res.status(404).json({
+          ok: false,
+          error: {
+            message: 'User not found'
+          }
+        });
+      }
+
+      const updatedAt = new Date();
+      user.updatedAt = updatedAt;
+      user.username = username,
+      user.bio = bio,
+      user.avatar = avatar
+
+      await user.save();
+
+      res.json({
+        ok: true,
+        msg: 'User data updated successfuly',
+        user: {
+          id: user.id,
+          username: user.username,
+          bio: user.bio,
+          avatar: user.avatar,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt
         }
       });
-    }
-
-    user.username = username,
-    user.bio = bio,
-    user.avatar = avatar
-
-    await user.save();
-
-    res.json({
-      ok: true,
-      msg: 'User data updated successfuly',
-      user: {
-        id: user.id,
-        username: user.username,
-        bio: user.bio,
-        avatar: user.avatar,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt
-      }
-    });
-
   } catch (error) {
-    res.status(500).json({
-      ok: false,
-      error:{
-        message: 'Something went wrong, please contact the admin'
-      }
-
-    });
+      return res.status(403).json({
+          ok: false,
+          error: {
+              message: error.message,
+              token
+          }
+      });
   }
+  
 };
 
 const loginUser = async (req, res = response, next) => {

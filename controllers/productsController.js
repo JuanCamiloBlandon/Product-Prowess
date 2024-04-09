@@ -1,23 +1,13 @@
 const { response } = require('express');
 const jwt = require('jsonwebtoken');
 const Products = require('../models/Products');
+const {verifyToken} = require('./tokenController');
 const mongoose = require('mongoose');
 const secret = process.env.SECRET;
 
-const verifyToken = (token, secret) => {
-    return new Promise((resolve, reject) => {
-        jwt.verify(token, secret, (error, decoded) => {
-            if (error) {
-                reject(new Error('Invalid Token'));
-            }
-            resolve(decoded.id);
-        });
-    });
-};
-
 const createProduct = async (req, res = response) => {
     const { productName, description, url, tags} = req.body;
-    const token = req.headers.authorization;
+    let token = req.headers.authorization;
 
     if (!token) {
         return res.status(401).json({
@@ -43,7 +33,7 @@ const createProduct = async (req, res = response) => {
             });
         }
 
-        const userIdObject = new mongoose.Types(idUser);
+        const userIdObject = mongoose.Types.ObjectId.createFromTime(idUser);
         const createdAt = new Date();
         const updatedAt = new Date();
 
