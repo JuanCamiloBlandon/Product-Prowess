@@ -4,39 +4,34 @@ const Products = require('../models/Products');
 const mongoose = require('mongoose');
 const secret = process.env.SECRET;
 
-const createProduct = async (req, res = response) => {
-    const { productName, description, url, tags} = req.body;
-    let token = req.headers.authorization;
-    let idUser;
-
-    if (!token){
-        return res.status(401).json({
-          ok: false,
-          error: {
-            message: 'Missing Token'
-          }
-        });
-    }
-
-    token = token.split(' ')[1];
-
-    try {
+const verifyToken = (token, secret) => {
+    return new Promise((resolve, reject) => {
         jwt.verify(token, secret, (error, decoded) => {
             if (error) {
-                throw new Error('Invalid Token');
+                reject(new Error('Invalid Token'));
             }
-            idUser = decoded.id;
+            resolve(decoded.id);
         });
-    } catch (error) {
-        return res.status(403).json({
+    });
+};
+
+const createProduct = async (req, res = response) => {
+    const { productName, description, url, tags} = req.body;
+    const token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(401).json({
             ok: false,
             error: {
-                message: error.message
+                message: 'Missing Token'
             }
         });
     }
 
     try {
+        token = token.split(' ')[1];
+        const idUser = await verifyToken(token, secret);
+
         const existingProduct = await Products.findOne({ productName, userId: idUser });
 
         if (existingProduct) {
@@ -48,7 +43,7 @@ const createProduct = async (req, res = response) => {
             });
         }
 
-        const userIdObject = new mongoose.Types.ObjectId(idUser);
+        const userIdObject = new mongoose.Types(idUser);
         const createdAt = new Date();
         const updatedAt = new Date();
 
@@ -62,10 +57,10 @@ const createProduct = async (req, res = response) => {
             }
         });
     } catch (error) {
-        return res.status(500).json({
+        return res.status(403).json({
             ok: false,
             error: {
-                message: 'Something went worng, please contact to admin'
+                message: error.message
             }
         });
     }
