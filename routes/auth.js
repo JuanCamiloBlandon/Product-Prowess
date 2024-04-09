@@ -34,7 +34,7 @@ router.put(
   [
     check('username', 'Username is mandatory').not().isEmpty(),
     check('bio', 'Bio is mandatory').not().isEmpty(),
-    check('avatar', 'Avatar is mandatory').not().isEmpty(),
+    check('avatar').optional(),
     validateFields
   ],
   updateUser
