@@ -4,10 +4,13 @@ const mongoose = require('mongoose');
 const { verifyToken } = require('./tokenController');
 const Comments = require('../models/Comments');
 const Products = require('../models/Products');
+const Users = require('../models/User');
+const { Result } = require('express-validator');
 const secret = process.env.SECRET;
 
 const createComment = async (req, res = response) => {
-    const { content, productId } = req.body;
+    const productId = req.params.id;
+    const { content} = req.body;
     let token = req.headers.authorization;
 
     if (!token) {
@@ -62,6 +65,24 @@ const createComment = async (req, res = response) => {
     }
 };
 
+const getCommentsByIdProduct = async(IdProduct)=>{
+    const comments = await Comments.find({productId: IdProduct});
+    const namesUsers = [];
+    for (let comment of comments) {
+        const user = await Users.findOne({_id: comment.userId});
+        namesUsers.push(user.username);
+    }
+
+    const formatedComments = comments.map((comment, index) => ({
+        username: namesUsers[index],
+        content: comment.content,
+        createdAt: comment.createdAt
+    }));
+    return formatedComments
+}
+
+
 module.exports = {
-    createComment
+    createComment,
+    getCommentsByIdProduct
 };

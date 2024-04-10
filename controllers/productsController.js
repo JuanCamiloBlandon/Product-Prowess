@@ -1,7 +1,10 @@
 const { response } = require('express');
 const jwt = require('jsonwebtoken');
 const Products = require('../models/Products');
+const Users = require('../models/User');
+const Comments = require('../models/Comments');
 const { verifyToken } = require('./tokenController');
+const { getCommentsByIdProduct } = require('./commentsController');
 const mongoose = require('mongoose');
 const secret = process.env.SECRET;
 
@@ -162,9 +165,67 @@ const deleteProduct = async (req, res = response) => {
     }
 };
 
+const searchProductById = async (req, res = response) => {
+    const productId = req.params.id;
+    let token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(401).json({
+            ok: false,
+            error: {
+                message: 'Missing Token'
+            }
+        });
+    }
+
+    try {
+        token = token.split(' ')[1];
+
+        const idUser = await verifyToken(token, secret);
+
+        const existingProduct = await Products.findOne({_id:productId});
+
+        if (!existingProduct) {
+            return res.status(404).json({
+                ok: false,
+                error: {
+                    message: 'The product you are trying to search for does not exist'
+                }
+            });
+        }
+
+        const user = await Users.findOne({_id:idUser});
+        const comments = await getCommentsByIdProduct(productId);
+
+        res.json({
+            ok: true,
+            msg: {
+                _id: existingProduct._id,
+                productName: existingProduct.productName,
+                ByPublic: user.username,
+                description: existingProduct.description,
+                url: existingProduct.url,
+                tags: existingProduct.tags,
+                createdAt: existingProduct.createdAt,
+                comments: comments
+            }
+        });
+
+
+    } catch (error) {
+        return res.status(403).json({
+            ok: false,
+            error: {
+              message: error.message
+            }
+          });
+    }
+};
+
 
 module.exports = {
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    searchProductById
 };

@@ -7,9 +7,8 @@ const { validateFields } = require('../middlewares/validateFields');
 
 
 router.post(
-  '/createComment', 
+  '/createComment/:id', 
   [
-    check('productId', 'productId is mandatory').not().isEmpty(),
     check('content', 'content is mandatory').not().isEmpty(),
     validateFields
   ],
