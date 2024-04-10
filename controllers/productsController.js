@@ -113,8 +113,58 @@ const updateProduct = async (req, res = response) => {
     }
 };
 
+const deleteProduct = async (req, res = response) => {
+    const productId = req.params.id;
+    let token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(401).json({
+            ok: false,
+            error: {
+                message: 'Missing Token'
+            }
+        });
+    }
+
+    try {
+        token = token.split(' ')[1];
+
+        const idUser = await verifyToken(token, secret);
+
+        const existingProduct = await Products.findOne({_id:productId, userId: idUser});
+
+        if (!existingProduct) {
+            return res.status(403).json({
+                ok: false,
+                error: {
+                    message: 'The product you want to delete is not in your product list'
+                }
+            });
+        }
+
+        await Products.deleteOne({_id: productId});
+
+        res.json({
+            ok: true,
+            msg: {
+                message: 'Successfully delete product'
+            }
+        });
+
+
+    } catch (error) {
+        return res.status(403).json({
+            ok: false,
+            error: {
+              message: error.message
+            }
+          });
+    }
+};
+
 
 module.exports = {
     createProduct,
-    updateProduct
+    updateProduct,
+    deleteProduct
 };
