@@ -22,6 +22,7 @@ router.put(
   '/updateProduct/:id',
   [
     check('productName', 'productName is mandatory').not().isEmpty(),
+    check('description', 'description is mandatory').not().isEmpty(),
     validateFields
   ],
   updateProduct

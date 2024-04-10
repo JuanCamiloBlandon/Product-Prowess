@@ -22,7 +22,7 @@ const createProduct = async (req, res = response) => {
         token = token.split(' ')[1];
         const idUser = await verifyToken(token, secret);
 
-        const existingProduct = await Products.findOne({ productName, userId: idUser });
+        const existingProduct = await Products.findOne({productName, userId: idUser});
 
         if (existingProduct) {
             return res.status(400).json({
@@ -33,12 +33,12 @@ const createProduct = async (req, res = response) => {
             });
         }
 
-        const userIdObject = mongoose.Types.ObjectId.createFromTime(idUser);
         const createdAt = new Date();
         const updatedAt = new Date();
 
-        const product = new Products({ productName, description, url, tags, userId: userIdObject, createdAt, updatedAt });
+        const product = new Products({ productName, description, url, tags, userId: idUser, createdAt, updatedAt });
         await product.save();
+        console.log("Paso")
 
         return res.status(200).json({
             ok: true,
@@ -58,7 +58,7 @@ const createProduct = async (req, res = response) => {
 
 const updateProduct = async (req, res = response) => {
     const productId = req.params.id;
-    const { productName } = req.body;
+    const { productName, description } = req.body;
     let token = req.headers.authorization;
 
     if (!token) {
@@ -98,6 +98,7 @@ const updateProduct = async (req, res = response) => {
         Products.updatedAt = new Data();
 
         Products.productName = productName;
+        Products.description = description;
 
         await Products.save();
 
