@@ -38,7 +38,6 @@ const createProduct = async (req, res = response) => {
 
         const product = new Products({ productName, description, url, tags, userId: idUser, createdAt, updatedAt });
         await product.save();
-        console.log("Paso")
 
         return res.status(200).json({
             ok: true,
@@ -73,39 +72,33 @@ const updateProduct = async (req, res = response) => {
     try {
         token = token.split(' ')[1];
 
-        const decodedPorductId = await verifyToken(token, secret);
+        const idUser = await verifyToken(token, secret);
+        console.log(productId)
+        console.log(idUser)
 
-        if (productId !== decodedPorductId) {
+        const existingProduct = await Products.findOne({_id:productId, userId: idUser});
+
+        if (!existingProduct) {
             return res.status(403).json({
                 ok: false,
                 error: {
-                    message: 'The Token does not match the product ID'
+                    message: 'The product you want to modify is not in your product list'
                 }
             });
         }
 
-        const product = await Products.findById(productId);
+        const updatedAt = new Date();
 
-        if (!product) {
-            return res.status(404).json({
-                ok: false,
-                error: {
-                    message: 'Product not found'
-                }
-            });
-        }
+        existingProduct.updatedAt = updatedAt;
+        existingProduct.productName = productName;
+        existingProduct.description = description;
 
-        Products.updatedAt = new Data();
-
-        Products.productName = productName;
-        Products.description = description;
-
-        await Products.save();
+        await existingProduct.save();
 
         res.json({
             ok: true,
             msg: {
-                productName: Products.productName
+                message: 'Successfully update product'
             }
         });
 
@@ -114,8 +107,7 @@ const updateProduct = async (req, res = response) => {
         return res.status(403).json({
             ok: false,
             error: {
-              message: error.message,
-              token
+              message: error.message
             }
           });
     }
