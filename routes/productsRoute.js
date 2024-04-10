@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = Router();
 
-const {createProduct} = require('../controllers/productsController');
+const {createProduct, updateProduct} = require('../controllers/productsController');
 const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validateFields');
 
@@ -17,5 +17,14 @@ router.post(
   ],
   createProduct
 );
+
+router.put(
+  '/updateProduct/:id',
+  [
+    check('productName', 'productName is mandatory').not().isEmpty(),
+    validateFields
+  ],
+  updateProduct
+)
 
 module.exports = router;
