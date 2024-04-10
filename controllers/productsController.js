@@ -220,12 +220,67 @@ const searchProductById = async (req, res = response) => {
             }
           });
     }
+
+
+
 };
+
+const searchProductsByTagOrName = async (req, res = response) => {
+    const { searchKey } = req.query; // Obtener el parámetro de búsqueda desde la URL
+
+    let token = req.headers.authorization;
+    if (!token) {
+        return res.status(401).json({
+            ok: false,
+            error: {
+                message: 'Missing Token'
+            }
+        });
+    }
+
+    try {
+        token = token.split(' ')[1];
+        const idUser = await verifyToken(token, secret);
+
+        const products = await Products.find({
+            $or: [
+                { tags: { $in: [searchKey] } }, // Buscar por etiqueta
+                { productName: { $regex: searchKey, $options: 'i' } } // Buscar por nombre (ignorando mayúsculas y minúsculas)
+            ]
+        });
+
+        if (!products || products.length === 0) {
+            return res.status(404).json({
+                ok: false,
+                error: {
+                    message: 'No products found matching the search criteria'
+                }
+            });
+        }
+
+        res.json({
+            ok: true,
+            msg: {
+                products: products
+            }
+        });
+
+    } catch (error) {
+        return res.status(403).json({
+            ok: false,
+            error: {
+                message: error.message
+            }
+        });
+    }
+};
+
 
 
 module.exports = {
     createProduct,
     updateProduct,
     deleteProduct,
-    searchProductById
+    searchProductById,
+    searchProductsByTagOrName
 };
