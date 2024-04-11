@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = Router();
 
-const {createProduct, updateProduct, deleteProduct, searchProductById, searchProductsByTagOrName} = require('../controllers/productsController');
+const {createProduct, updateProduct, deleteProduct, searchProductById, searchProductsByTagOrName, rateProduct} = require('../controllers/productsController');
 const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validateFields');
 
@@ -26,21 +26,31 @@ router.put(
     validateFields
   ],
   updateProduct
-)
+);
 
 router.delete(
   '/deleteProduct/:id',
   deleteProduct
-)
+);
 
 router.get(
   '/searchProduct/:id',
   searchProductById
-)
+);
 
 router.get(
   '/search',
   searchProductsByTagOrName
-)
+);
+
+
+router.post(
+  '/rateProduct/:id',
+  [
+    check('rating', 'rating is mandatory').isNumeric().isIn([1, 2, 3, 4, 5]),
+    validateFields
+  ],
+  rateProduct
+);
 
 module.exports = router;

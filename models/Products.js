@@ -35,6 +35,18 @@ const ProdutsSchema = Schema({
         type: Date,
         require: true
     },
+
+    rateAverage: {
+        type: Number,
+        default: 0
+    },
+
+    totalRatings: {
+        type: Number,
+        default: 0
+    },
+
+
 });
 
 module.exports = model('Products', ProdutsSchema);

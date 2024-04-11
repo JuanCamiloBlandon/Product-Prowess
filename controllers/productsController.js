@@ -6,6 +6,7 @@ const Comments = require('../models/Comments');
 const { verifyToken } = require('./tokenController');
 const { getCommentsByIdProduct } = require('./commentsController');
 const mongoose = require('mongoose');
+const { ResolveStart } = require('@angular/router');
 const secret = process.env.SECRET;
 
 const createProduct = async (req, res = response) => {
@@ -25,7 +26,7 @@ const createProduct = async (req, res = response) => {
         token = token.split(' ')[1];
         const idUser = await verifyToken(token, secret);
 
-        const existingProduct = await Products.findOne({productName, userId: idUser});
+        const existingProduct = await Products.findOne({ productName, userId: idUser });
 
         if (existingProduct) {
             return res.status(400).json({
@@ -79,7 +80,7 @@ const updateProduct = async (req, res = response) => {
         console.log(productId)
         console.log(idUser)
 
-        const existingProduct = await Products.findOne({_id:productId, userId: idUser});
+        const existingProduct = await Products.findOne({ _id: productId, userId: idUser });
 
         if (!existingProduct) {
             return res.status(403).json({
@@ -110,9 +111,9 @@ const updateProduct = async (req, res = response) => {
         return res.status(403).json({
             ok: false,
             error: {
-              message: error.message
+                message: error.message
             }
-          });
+        });
     }
 };
 
@@ -134,7 +135,7 @@ const deleteProduct = async (req, res = response) => {
 
         const idUser = await verifyToken(token, secret);
 
-        const existingProduct = await Products.findOne({_id:productId, userId: idUser});
+        const existingProduct = await Products.findOne({ _id: productId, userId: idUser });
 
         if (!existingProduct) {
             return res.status(403).json({
@@ -145,7 +146,7 @@ const deleteProduct = async (req, res = response) => {
             });
         }
 
-        await Products.deleteOne({_id: productId});
+        await Products.deleteOne({ _id: productId });
 
         res.json({
             ok: true,
@@ -159,9 +160,9 @@ const deleteProduct = async (req, res = response) => {
         return res.status(403).json({
             ok: false,
             error: {
-              message: error.message
+                message: error.message
             }
-          });
+        });
     }
 };
 
@@ -183,7 +184,7 @@ const searchProductById = async (req, res = response) => {
 
         const idUser = await verifyToken(token, secret);
 
-        const existingProduct = await Products.findOne({_id:productId});
+        const existingProduct = await Products.findOne({ _id: productId });
 
         if (!existingProduct) {
             return res.status(404).json({
@@ -194,7 +195,7 @@ const searchProductById = async (req, res = response) => {
             });
         }
 
-        const user = await Users.findOne({_id:idUser});
+        const user = await Users.findOne({ _id: idUser });
         const comments = await getCommentsByIdProduct(productId);
 
         res.json({
@@ -202,7 +203,7 @@ const searchProductById = async (req, res = response) => {
             msg: {
                 _id: existingProduct._id,
                 productName: existingProduct.productName,
-                ByPublic: user.username,
+                publishedBy: user.username,
                 description: existingProduct.description,
                 url: existingProduct.url,
                 tags: existingProduct.tags,
@@ -216,9 +217,9 @@ const searchProductById = async (req, res = response) => {
         return res.status(403).json({
             ok: false,
             error: {
-              message: error.message
+                message: error.message
             }
-          });
+        });
     }
 
 
@@ -275,6 +276,62 @@ const searchProductsByTagOrName = async (req, res = response) => {
     }
 };
 
+const rateProduct = async (req, res = response) => {
+    const productId = req.params.id;
+    const { rating } = req.body;
+    let token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(401).json({
+            ok: false,
+            error: {
+                message: 'Missing Token'
+            }
+        });
+    }
+
+    try {
+        token = token.split(' ')[1];
+        const idUser = await verifyToken(token, secret);
+
+        const existingRating = await Ratings.findOne({ productId, userId: idUser });
+
+        if (existingRating) {
+            return res.status(400).json({
+                ok: false,
+                error: {
+                    message: 'You have rated this product already.'
+                }
+            });
+
+        }
+        const product = await Products.findById(productId);
+
+        const totalRatings = product.totalRatings + 1;
+
+        const rateAverage = (product.rateAverage * product.totalRatings + rating) / totalRatings;
+        product.rateAverage = rateAverage;
+        product.totalRatings = totalRatings;
+
+        await product.save();
+
+        res.status(200).json({
+            ok: true,
+            error: {
+                message: 'Successfully rated product'
+            }
+        });
+
+    } catch (error) {
+        return res.status(403).json({
+            ok: false,
+            error: {
+                message: error.message
+            }
+        });
+    }
+};
+
 
 
 module.exports = {
@@ -282,5 +339,6 @@ module.exports = {
     updateProduct,
     deleteProduct,
     searchProductById,
-    searchProductsByTagOrName
+    searchProductsByTagOrName,
+    rateProduct
 };
