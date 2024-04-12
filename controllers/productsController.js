@@ -4,7 +4,7 @@ const Products = require('../models/Products');
 const Users = require('../models/User');
 const Comments = require('../models/Comments');
 const { verifyToken } = require('./tokenController');
-const { getCommentsByIdProduct } = require('./commentsController');
+const { returnCommentsByIdProduct } = require('./commentsController');
 const mongoose = require('mongoose');
 const secret = process.env.SECRET;
 
@@ -195,7 +195,7 @@ const searchProductById = async (req, res = response) => {
         }
 
         const user = await Users.findOne({ _id: idUser });
-        const comments = await getCommentsByIdProduct(productId);
+        const comments = await returnCommentsByIdProduct(productId);
 
         res.json({
             ok: true,
@@ -206,6 +206,7 @@ const searchProductById = async (req, res = response) => {
                 description: existingProduct.description,
                 url: existingProduct.url,
                 tags: existingProduct.tags,
+                rateAverage: existingProduct.rateAverage,
                 createdAt: existingProduct.createdAt,
                 comments: comments
             }
@@ -226,7 +227,7 @@ const searchProductById = async (req, res = response) => {
 };
 
 const searchProductsByTagOrName = async (req, res = response) => {
-    const { searchKey } = req.query; // Obtener el parámetro de búsqueda desde la URL
+    const { searchKey } = req.query;
 
     let token = req.headers.authorization;
     if (!token) {
@@ -245,7 +246,8 @@ const searchProductsByTagOrName = async (req, res = response) => {
         const products = await Products.find({
             $or: [
                 { tags: { $in: [searchKey] } }, // Buscar por etiqueta
-                { productName: { $regex: searchKey, $options: 'i' } } // Buscar por nombre (ignorando mayúsculas y minúsculas)
+                { productName: { $regex: searchKey, $options: 'i' } }, // Buscar por nombre (ignorando mayúsculas y minúsculas)
+                { rateAverage: parseFloat(searchKey) } // Buscar por calificación promedio
             ]
         });
 
@@ -275,11 +277,63 @@ const searchProductsByTagOrName = async (req, res = response) => {
     }
 };
 
+const searchRateAverageByProductId = async (req, res = response) => {
+    const productId = req.params.id;
+    let token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(401).json({
+            ok: false,
+            error: {
+                message: 'Missing Token'
+            }
+        });
+    }
+
+    try {
+        token = token.split(' ')[1];
+
+        const idUser = await verifyToken(token, secret);
+
+        const existingProduct = await Products.findOne({ _id: productId });
+
+        if (!existingProduct) {
+            return res.status(404).json({
+                ok: false,
+                error: {
+                    message: 'The product you are trying to search for does not exist'
+                }
+            });
+        }
+
+        res.json({
+            ok: true,
+            msg: {
+                rateAverage: existingProduct.rateAverage
+            }
+        });
+
+
+    } catch (error) {
+        return res.status(403).json({
+            ok: false,
+            error: {
+                message: error.message
+            }
+        });
+    }
+
+
+
+};
+
+
 
 module.exports = {
     createProduct,
     updateProduct,
     deleteProduct,
     searchProductById,
-    searchProductsByTagOrName
+    searchProductsByTagOrName,
+    searchRateAverageByProductId
 };

@@ -28,6 +28,7 @@ const ProdutsSchema = Schema({
 
     rateAverage: {
         type: Number,
+        default: 0
     },
 
     createdAt: {
