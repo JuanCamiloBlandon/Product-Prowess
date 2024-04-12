@@ -16,6 +16,11 @@ const CommentsSchema = Schema({
         require: true
     },
 
+    rate:{
+        type: Number,
+        require: true
+    },
+
     createdAt: {
         type: Date,
         require: true

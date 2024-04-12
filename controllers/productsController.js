@@ -276,63 +276,6 @@ const searchProductsByTagOrName = async (req, res = response) => {
     }
 };
 
-const rateProduct = async (req, res = response) => {
-    const productId = req.params.id;
-    const { rating } = req.body;
-    let token = req.headers.authorization;
-
-    if (!token) {
-        return res.status(401).json({
-            ok: false,
-            error: {
-                message: 'Missing Token'
-            }
-        });
-    }
-
-    try {
-        token = token.split(' ')[1];
-        const idUser = await verifyToken(token, secret);
-
-        const existingRating = await Ratings.findOne({ productId, userId: idUser });
-
-        if (existingRating) {
-            return res.status(400).json({
-                ok: false,
-                error: {
-                    message: 'You have rated this product already.'
-                }
-            });
-
-        }
-        const product = await Products.findById(productId);
-
-        const totalRatings = product.totalRatings + 1;
-
-        const rateAverage = (product.rateAverage * product.totalRatings + rating) / totalRatings;
-        product.rateAverage = rateAverage;
-        product.totalRatings = totalRatings;
-
-        await product.save();
-
-        res.status(200).json({
-            ok: true,
-            error: {
-                message: 'Successfully rated product'
-            }
-        });
-
-    } catch (error) {
-        return res.status(403).json({
-            ok: false,
-            error: {
-                message: error.message
-            }
-        });
-    }
-};
-
-
 
 module.exports = {
     createProduct,

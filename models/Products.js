@@ -26,6 +26,10 @@ const ProdutsSchema = Schema({
         require: true
     },
 
+    rateAverage: {
+        type: Number,
+    },
+
     createdAt: {
         type: Date,
         require: true
@@ -34,18 +38,7 @@ const ProdutsSchema = Schema({
     updatedAt: {
         type: Date,
         require: true
-    },
-
-    rateAverage: {
-        type: Number,
-        default: 0
-    },
-
-    totalRatings: {
-        type: Number,
-        default: 0
-    },
-
+    }
 
 });
 
