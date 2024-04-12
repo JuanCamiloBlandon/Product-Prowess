@@ -44,13 +44,4 @@ router.get(
 );
 
 
-router.post(
-  '/rateProduct/:id',
-  [
-    check('rating', 'rating is mandatory').isNumeric().isIn([1, 2, 3, 4, 5]),
-    validateFields
-  ],
-  rateProduct
-);
-
 module.exports = router;

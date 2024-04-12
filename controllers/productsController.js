@@ -6,7 +6,6 @@ const Comments = require('../models/Comments');
 const { verifyToken } = require('./tokenController');
 const { getCommentsByIdProduct } = require('./commentsController');
 const mongoose = require('mongoose');
-const { ResolveStart } = require('@angular/router');
 const secret = process.env.SECRET;
 
 const createProduct = async (req, res = response) => {
@@ -282,6 +281,5 @@ module.exports = {
     updateProduct,
     deleteProduct,
     searchProductById,
-    searchProductsByTagOrName,
-    rateProduct
+    searchProductsByTagOrName
 };
