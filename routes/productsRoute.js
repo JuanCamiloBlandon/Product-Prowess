@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = Router();
 
-const {createProduct, updateProduct} = require('../controllers/productsController');
+const {createProduct, updateProduct, deleteProduct, searchProductById, searchProductsByTagOrName, rateProduct} = require('../controllers/productsController');
 const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validateFields');
 
@@ -22,9 +22,26 @@ router.put(
   '/updateProduct/:id',
   [
     check('productName', 'productName is mandatory').not().isEmpty(),
+    check('description', 'description is mandatory').not().isEmpty(),
     validateFields
   ],
   updateProduct
-)
+);
+
+router.delete(
+  '/deleteProduct/:id',
+  deleteProduct
+);
+
+router.get(
+  '/searchProduct/:id',
+  searchProductById
+);
+
+router.get(
+  '/search',
+  searchProductsByTagOrName
+);
+
 
 module.exports = router;

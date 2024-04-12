@@ -1,12 +1,16 @@
 const { response } = require('express');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const { verifyToken } = require('./tokenController');
 const Comments = require('../models/Comments');
 const Products = require('../models/Products');
+const Users = require('../models/User');
+const { Result } = require('express-validator');
 const secret = process.env.SECRET;
 
 const createComment = async (req, res = response) => {
-    const { content, productId } = req.body;
+    const productId = req.params.id;
+    const { content} = req.body;
     let token = req.headers.authorization;
 
     if (!token) {
@@ -20,8 +24,7 @@ const createComment = async (req, res = response) => {
 
     try {
         token = token.split(' ')[1];
-        const decoded = jwt.verify(token, secret);
-        const idUser = decoded.id;
+        const idUser = await verifyToken(token, secret);
 
         let existingProduct;
         try {
@@ -35,21 +38,16 @@ const createComment = async (req, res = response) => {
             });
         }
 
-        if (!existingProduct) {
-            return res.status(404).json({
-                ok: false,
-                error: {
-                    message: 'The product to be commented on does not exist'
-                }
-            });
-        }
-
-        const userIdObject = mongoose.Types.ObjectId.createFromTime(idUser);
+    
         const createdAt = new Date();
         const updatedAt = new Date();
-
-        const comment = new Comments({ productId, userId: userIdObject, content, createdAt, updatedAt });
-        await comment.save();
+        try {
+            const comment = new Comments({ productId, userId: idUser, content, createdAt, updatedAt });
+            await comment.save();
+        } catch (error) {
+            console.log(error)
+        }
+        
 
         res.status(200).json({
             ok: true,
@@ -67,6 +65,24 @@ const createComment = async (req, res = response) => {
     }
 };
 
+const getCommentsByIdProduct = async(IdProduct)=>{
+    const comments = await Comments.find({productId: IdProduct});
+    const namesUsers = [];
+    for (let comment of comments) {
+        const user = await Users.findOne({_id: comment.userId});
+        namesUsers.push(user.username);
+    }
+
+    const formatedComments = comments.map((comment, index) => ({
+        username: namesUsers[index],
+        content: comment.content,
+        createdAt: comment.createdAt
+    }));
+    return formatedComments
+}
+
+
 module.exports = {
-    createComment
+    createComment,
+    getCommentsByIdProduct
 };

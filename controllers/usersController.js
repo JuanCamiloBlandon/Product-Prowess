@@ -106,13 +106,6 @@ const updateUser = async (req, res = response) => {
     res.json({
       ok: true,
       msg: 'User data updated successfuly',
-      user: {
-        id: user.id,
-        username: user.username,
-        bio: user.bio,
-        avatar: user.avatar,
-        updatedAt: user.updatedAt
-      }
     });
   } catch (error) {
     return res.status(403).json({
