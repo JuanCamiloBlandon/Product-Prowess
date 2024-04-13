@@ -1,10 +1,10 @@
 const { response } = require('express');
 const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
+const commentService = require('../../application/services/commentService');
 const { verifyToken } = require('./tokenController');
-const Comments = require('../models/Comments');
-const Products = require('../models/Products');
-const Users = require('../models/User');
+const Comments = require('../models/commentsModel');
+const Products = require('../models/productsModel');
+const Users = require('../models/usersModel');
 const secret = process.env.SECRET;
 
 const createComment = async (req, res = response) => {
@@ -23,37 +23,9 @@ const createComment = async (req, res = response) => {
 
     try {
         token = token.split(' ')[1];
-        const idUser = await verifyToken(token, secret);
-
-        let existingProduct;
-        try {
-            existingProduct = await Products.findById(productId);
-        } catch (error) {
-            return res.status(404).json({
-                ok: false,
-                error: {
-                    message: 'The product to be commented on does not exist'
-                }
-            });
-        }
-
-    
-        const createdAt = new Date();
-        const updatedAt = new Date();
-        try {
-            const comment = new Comments({ productId, userId: idUser, content, rate, createdAt, updatedAt });
-            await comment.save();
-
-            const comments = await Comments.find({ productId });
-            const totalRates = comments.reduce((acc, curr) => acc + curr.rate, 0);
-            const rateAverage = totalRates / comments.length;
-            existingProduct.rateAverage = rateAverage;
-            await existingProduct.save();
-
-        } catch (error) {
-            console.log(error)
-        }
-        
+        const userId = await verifyToken(token, secret);
+        const productData = { content, rate};
+        const newComment = await commentService.createComment(productData, userId, productId);  
 
         res.status(200).json({
             ok: true,
@@ -62,12 +34,30 @@ const createComment = async (req, res = response) => {
             }
         });
     } catch (error) {
-        return res.status(403).json({
+        if (error.message === 'Error: The product to be commented on does not exist') {
+            return res.status(404).json({
+                ok: false,
+                error: {
+                    message: 'The product to be commented on does not exist'
+                }
+            });
+        }
+        if (error.message === 'Invalid Token') {
+            return res.status(401).json({
+                ok: false,
+                error: {
+                    message: 'Invalid Token'
+                }
+            });
+        }
+        console.log(error)
+        res.status(500).json({
             ok: false,
             error: {
-                message: 'Invalid Token'
+                message: 'Something went wrong, please contact the admin'
             }
         });
+        
     }
 };
 

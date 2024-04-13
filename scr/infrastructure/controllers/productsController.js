@@ -1,8 +1,7 @@
 const { response } = require('express');
-const jwt = require('jsonwebtoken');
-const Products = require('../models/Products');
-const Users = require('../models/User');
-const Comments = require('../models/Comments');
+const Products = require('../models/productsModel');
+const Users = require('../models/usersModel');
+const productService = require('../../application/services/productService');
 const { verifyToken } = require('./tokenController');
 const { returnCommentsByIdProduct } = require('./commentsController');
 const mongoose = require('mongoose');
@@ -25,36 +24,37 @@ const createProduct = async (req, res = response) => {
         token = token.split(' ')[1];
         const idUser = await verifyToken(token, secret);
 
-        const existingProduct = await Products.findOne({ productName, userId: idUser });
+        const productData = { productName, description, url, tags };
+        const newProduct = await productService.createProduct(productData, idUser);
 
-        if (existingProduct) {
-            return res.status(400).json({
+        res.status(200).json({
+            ok: true,
+            msg: 'Successfully created product'
+        });
+    } catch (error) {
+        if (error.message === 'Error: Product already exists') {
+            return res.status(404).json({
                 ok: false,
                 error: {
                     message: 'Product already exists'
                 }
             });
         }
-
-        const createdAt = new Date();
-        const updatedAt = new Date();
-
-        const product = new Products({ productName, description, url, tags, userId: idUser, createdAt, updatedAt });
-        await product.save();
-
-        return res.status(200).json({
-            ok: true,
-            error: {
-                message: 'Successfully created product'
-            }
-        });
-    } catch (error) {
-        return res.status(403).json({
+        if (error.message === 'Invalid Token') {
+            return res.status(401).json({
+                ok: false,
+                error: {
+                    message: 'Invalid Token'
+                }
+            });
+        }
+        res.status(500).json({
             ok: false,
             error: {
-                message: error.message
+                message: 'Something went wrong, please contact the admin'
             }
         });
+        
     }
 };
 
@@ -75,30 +75,12 @@ const updateProduct = async (req, res = response) => {
     try {
         token = token.split(' ')[1];
 
-        const idUser = await verifyToken(token, secret);
-        console.log(productId)
-        console.log(idUser)
+        const userId = await verifyToken(token, secret);
 
-        const existingProduct = await Products.findOne({ _id: productId, userId: idUser });
+        const productData = {productName, description};
+        const updatedProduct = await productService.updateProduct(productData, productId, userId);
 
-        if (!existingProduct) {
-            return res.status(403).json({
-                ok: false,
-                error: {
-                    message: 'The product you want to modify is not in your product list'
-                }
-            });
-        }
-
-        const updatedAt = new Date();
-
-        existingProduct.updatedAt = updatedAt;
-        existingProduct.productName = productName;
-        existingProduct.description = description;
-
-        await existingProduct.save();
-
-        res.json({
+        res.status(200).json({
             ok: true,
             msg: {
                 message: 'Successfully update product'
@@ -107,10 +89,28 @@ const updateProduct = async (req, res = response) => {
 
 
     } catch (error) {
-        return res.status(403).json({
+        if (error.message === 'Error: The product you want to modify is not in your product list') {
+            return res.status(404).json({
+                ok: false,
+                error: {
+                    message: 'The product you want to modify is not in your product list'
+                }
+            });
+        }
+        
+        if (error.message === 'Invalid Token') {
+            return res.status(401).json({
+                ok: false,
+                error: {
+                    message: 'Invalid Token'
+                }
+            });
+        }
+        console.log(error.message)
+        res.status(500).json({
             ok: false,
             error: {
-                message: error.message
+                message: 'Something went wrong, please contact the admin',
             }
         });
     }
@@ -131,23 +131,10 @@ const deleteProduct = async (req, res = response) => {
 
     try {
         token = token.split(' ')[1];
+        const userId = await verifyToken(token, secret);
+        const deleteProduct = await productService.deleteProduct(productId, userId);
 
-        const idUser = await verifyToken(token, secret);
-
-        const existingProduct = await Products.findOne({ _id: productId, userId: idUser });
-
-        if (!existingProduct) {
-            return res.status(403).json({
-                ok: false,
-                error: {
-                    message: 'The product you want to delete is not in your product list'
-                }
-            });
-        }
-
-        await Products.deleteOne({ _id: productId });
-
-        res.json({
+        res.status(200).json({
             ok: true,
             msg: {
                 message: 'Successfully delete product'
@@ -156,13 +143,32 @@ const deleteProduct = async (req, res = response) => {
 
 
     } catch (error) {
-        return res.status(403).json({
+        console.log(error)
+        if (error.message === 'Error: The product you want to delete is not in your product list') {
+            return res.status(404).json({
+                ok: false,
+                error: {
+                    message: 'The product you want to delete is not in your product list'
+                }
+            });
+        }
+        if (error.message === 'Invalid Token') {
+            return res.status(401).json({
+                ok: false,
+                error: {
+                    message: 'Invalid Token'
+                }
+            });
+        }
+        res.status(500).json({
             ok: false,
             error: {
-                message: error.message
+                message: 'Something went wrong, please contact the admin',
             }
         });
+        
     }
+    
 };
 
 const searchProductById = async (req, res = response) => {
@@ -242,14 +248,18 @@ const searchProductsByTagOrName = async (req, res = response) => {
     try {
         token = token.split(' ')[1];
         const idUser = await verifyToken(token, secret);
+        let products = ""
+        if(!isNaN(searchKey)){
+            products = await Products.find ({rateAverage: searchKey})
+        }else{
+            products = await Products.find({
+                $or: [
+                    { tags: { $in: [searchKey] } },
+                    { productName: searchKey }, 
+                ]
+            });
+        }
 
-        const products = await Products.find({
-            $or: [
-                { tags: { $in: [searchKey] } }, // Buscar por etiqueta
-                { productName: { $regex: searchKey, $options: 'i' } }, // Buscar por nombre (ignorando mayúsculas y minúsculas)
-                { rateAverage: parseFloat(searchKey) } // Buscar por calificación promedio
-            ]
-        });
 
         if (!products || products.length === 0) {
             return res.status(404).json({
