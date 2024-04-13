@@ -1,12 +1,10 @@
 const { Router } = require('express');
 const router = Router();
 
-const { createUser, loginUser, renewToken, updateUser } = require('../controllers/usersController');
+const { createUser, loginUser, updateUser } = require('../controllers/usersController');
 const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validateFields');
 
-
-// Create a new user
 router.post(
   '/signUp', 
   [
@@ -40,6 +38,5 @@ router.put(
   updateUser
 );
 
-router.get('/renew', renewToken);
 
 module.exports = router;

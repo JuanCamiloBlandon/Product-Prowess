@@ -1,5 +1,5 @@
 const express = require('express');
-const dbConnection = require('./database/config');
+const dbConnection = require('./scr/infrastructure/database/config');
 require('dotenv').config();
 
 // Env VARS
@@ -16,9 +16,9 @@ dbConnection()
 
 
 // app routes
-app.use('/api/v1', require('./routes/auth') );
-app.use('/api/v1', require('./routes/productsRoute') );
-app.use('/api/v1', require('./routes/commentsRoute') )
+app.use('/api/v1', require('./scr/infrastructure/routes/usersRoute') );
+app.use('/api/v1', require('./scr/infrastructure/routes/productsRoute') );
+app.use('/api/v1', require('./scr/infrastructure/routes/commentsRoute') )
 
 
 app.listen(APP_PORT, () => {
