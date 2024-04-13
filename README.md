@@ -1,15 +1,15 @@
-## Descripción del Proyecto
+## Project Description
 
-Product-Prowess es un proyecto que busca clonar la funcionalidad principal de la plataforma ProductHunt. Esta aplicación permitirá a los usuarios registrar nuevos productos, votar por sus favoritos y dejar reseñas. Es una excelente manera de descubrir y promocionar productos nuevos e innovadores.
+Product-Prowess is a project aimed at cloning the main functionality of the ProductHunt platform. This application will allow users to register new products, vote for their favorites, and leave reviews. It's an excellent way to discover and promote new and innovative products.
 
-## Funcionalidades Principales
+## Key Features
 
-- Registro y autenticación de usuarios.
-- Calificación de productos.
-- Creación y visualización de reseñas.
+- User registration and authentication.
+- Product rating.
+- Creation and display of reviews
 
 
-## Tecnologías Utilizadas
+## Technologies Used
 
 - Node.js
 - Express.js
@@ -18,17 +18,19 @@ Product-Prowess es un proyecto que busca clonar la funcionalidad principal de la
 - HTML/CSS
 - Bootstrap
 - MongoDB Atlas
+- bcrypt
+- jwt
 
-## Instalación
+## Installation
 
-1. Clona este repositorio: `git clone https://github.com/tu-usuario/product-prowess.git`
-2. Instala las dependencias del servidor: `npm install`
-3. Navega a la carpeta principal del proyecto: `cd Product-Prowess`
-4. Instala las dependencias del cliente: `npm install`
-5. Inicia el servidor: `npm run start`
-7. Abre tu navegador y visita: `http://localhost:3000`
+1. Clone this repository: git clone https://github.com/your-username/product-prowess.git
+2. Install server dependencies: npm install
+3. Navigate to the project's main folder: cd Product-Prowess
+4. Install client dependencies: npm install
+5. Start the server: npm run start
+6. Open your browser and visit: http://localhost:3000
 
-## Equipo
+## Team
 
-- Juan Camilo Blandón Lopez - Desarrollador
-- Yuldor Alexis Salazar Duque - Desarrollador
+- Juan Camilo Blandón Lopez - Developer
+- Yuldor Alexis Salazar Duque - Developer
