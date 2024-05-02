@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    border-bottom: 1px solid #c200ff;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background-color: transparent;
+}
+
+input[type="search"]::placeholder {
+    font-family: 'Kanit', sans-serif;
+    font-size: inherit;
+}
+
+.container-fluid {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-content {
+    font-family: 'Kanit', sans-serif;
+    margin-right: 795px;
+    white-space: nowrap;
+}
+
+.container {
+    position: relative;
+    margin: 60px auto 20px auto;
+    width: 80%;
+    border-radius: 8px;
+    border: 1px solid #B1BCE7;
+    padding: 80px;
+    text-align: left;
+    font-family: 'Kanit', sans-serif;
+}
+
+
+
+.public-text {
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-top: -30px;
+}
+
+.text-price {
+    font-size: 35px;
+    margin-top: -30px;
+    color: #c200ff;
+}
+
+
+.text-blue {
+    font-size: 35px;
+    color: #c200ff;
+    margin-top: 5px;
+}
+
+.imageHome {
+    position: absolute;
+    top: -6%;
+    left: 695px;
+    width: 300px;
+    height: 480px;
+}
+
+button {
+    margin-right: 5px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: #C70039;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    margin: 0 10px;
+    font-family: 'Kanit', sans-serif;
+}
+
+.register-form{
+    position: absolute;
+    top: 520px;
+    left: 180px;
+    transform: translate(-50%, -50%);
+}
+
+.content {
+    transition: opacity 0.5s;
+}
+
+.content.hidden {
+    opacity: 0;
+}
+
+.visible {
+    opacity: 1;
+}
