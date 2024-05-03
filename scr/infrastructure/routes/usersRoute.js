@@ -5,6 +5,81 @@ const { createUser, loginUser, updateUser } = require('../controllers/usersContr
 const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validateFields');
 
+// User
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: apiKey
+ *       in: header
+ *       name: Authorization
+ *       description: JWT authentication token in authorization header with "Bearer" prefix
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         username: 
+ *           type: string
+ *           description: the user name
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: the user email
+ *         password:
+ *           type: string
+ *           format: password
+ *           description: the user password
+ *         bio:
+ *           type: string
+ *           description: the user biography
+ *         avatar:
+ *           type: string
+ *           description: the user avatar url
+ *         createdAt:
+ *           type: string
+ *           format: date
+ *           description: the user creation date
+ *         updatedAt:
+ *           type: string
+ *           format: date
+ *           description: the user modification date
+ *       required:
+ *         - username
+ *         - email
+ *         - password
+ *         - bio
+ *       example:
+ *         username: enrique
+ *         email: enrique@email.com
+ *         password: 123456
+ *         avatar: https://tse3.mm.bing.net/th?id=OIP.JZ3eTMeBLN8Kns45eIA_nAHaHw&pid=Api&P=0&h=180
+ *         bio: vendedor antiguo con experiencia y productos de calidad
+ */
+
+
+/**
+ * @swagger
+ * /api/v1/signUp:
+ *  post:
+ *    summary: register user
+ *    tags: [User]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/User'
+ *    responses:
+ *      200: 
+ *        description: user registered
+ *      400:
+ *        description: User already exists
+ *      500: 
+ *        description: Something went worng, please contact to admin
+ */
+
 router.post(
   '/signUp', 
   [
@@ -17,6 +92,43 @@ router.post(
   createUser
 );
 
+
+
+/**
+ * @swagger
+ * /api/v1/logIn:
+ *   post:
+ *     summary: Log In
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: The user's email
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 description: The user's password
+ *           example:
+ *               email: enrique@email.com
+ *               password: "123456"
+ *     responses:
+ *       200:
+ *         description: User authenticated successfully
+ *       404:
+ *         description: User not found
+ *       401:
+ *         description: Wrong credentials
+ *       500:
+ *         description: Something went wrong, please contact the administrator
+ */
+
 router.post(
   '/logIn', 
   [
@@ -26,6 +138,57 @@ router.post(
   ],
   loginUser
 );
+
+/**
+ * @swagger
+ * /api/v1/updateUser/{id}:
+ *   put:
+ *     summary: Update user
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to update
+ *         schema:
+ *           type: string
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: The user's new username
+ *               bio:
+ *                 type: string
+ *                 description: The user's new biography
+ *               avatar:
+ *                 type: string
+ *                 description: The user's new avatar URL
+ *           example:
+ *            username: Enrique Perez
+ *            avatar: https://tse3.mm.bing.net/th?id=OIP.JZ3eTMeBLN8Kns45eIA_nAHaHw&pid=Api&P=0&h=180
+ *            bio: Vendedor de productos para el hogar
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *       400:
+ *         description: Bad request - missing or invalid parameters
+ *       401:
+ *         description: Unauthorized - Missing or invalid token
+ *       404:
+ *         description: User not found
+ *       403:
+ *         description: The Token does not match the user ID
+ *       500:
+ *         description: Something went wrong, please contact the administrator
+ */
+
 
 router.put(
   '/updateUser/:id',
