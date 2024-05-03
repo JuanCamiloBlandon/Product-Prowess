@@ -36,14 +36,6 @@ const { validateFields } = require('../middlewares/validateFields');
  *         avatar:
  *           type: string
  *           description: the user avatar url
- *         createdAt:
- *           type: string
- *           format: date
- *           description: the user creation date
- *         updatedAt:
- *           type: string
- *           format: date
- *           description: the user modification date
  *       required:
  *         - username
  *         - email
@@ -53,7 +45,7 @@ const { validateFields } = require('../middlewares/validateFields');
  *         username: enrique
  *         email: enrique@email.com
  *         password: 123456
- *         avatar: https://tse3.mm.bing.net/th?id=OIP.JZ3eTMeBLN8Kns45eIA_nAHaHw&pid=Api&P=0&h=180
+ *         avatar: https://example.com/avatar
  *         bio: vendedor antiguo con experiencia y productos de calidad
  */
 
@@ -172,7 +164,7 @@ router.post(
  *                 description: The user's new avatar URL
  *           example:
  *            username: Enrique Perez
- *            avatar: https://tse3.mm.bing.net/th?id=OIP.JZ3eTMeBLN8Kns45eIA_nAHaHw&pid=Api&P=0&h=180
+ *            avatar: https://example.com/product
  *            bio: Vendedor de productos para el hogar
  *     responses:
  *       200:
