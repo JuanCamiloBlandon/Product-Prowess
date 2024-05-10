@@ -25,7 +25,7 @@ const { validateFields } = require('../middlewares/validateFields');
 
 /**
  * @swagger
- * /api/v1/createComment/{id}:
+ * /api/v1/comments/{id}:
  *   post:
  *     summary: Create a new comment for a product
  *     tags: [Comments]
@@ -62,7 +62,7 @@ const { validateFields } = require('../middlewares/validateFields');
 
 
 router.post(
-  '/createComment/:id', 
+  '/comments/:id', 
   [
     check('content', 'content is mandatory').not().isEmpty(),
     check('rate', 'rate is mandatory').isNumeric().isIn([1,2,3,4,5]),
@@ -73,7 +73,7 @@ router.post(
 
 /**
  * @swagger
- * /api/v1/searchComments/{id}:
+ * /api/v1/comments/{id}:
  *   get:
  *     summary: Get comments for a product by ID
  *     tags: [Comments]
@@ -97,7 +97,7 @@ router.post(
 
 
 router.get(
-  '/searchComments/:id', 
+  '/comments/:id', 
   searchCommentsByIdProduct
 );
 

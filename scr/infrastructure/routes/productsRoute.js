@@ -40,7 +40,7 @@ const { validateFields } = require('../middlewares/validateFields');
 
 /**
  * @swagger
- * /api/v1/createProduct:
+ * /api/v1/products:
  *   post:
  *     summary: Create a new product
  *     tags: [Products]
@@ -69,7 +69,7 @@ const { validateFields } = require('../middlewares/validateFields');
  */
 
 router.post(
-  '/createProduct',
+  '/products',
   [
     check('productName', 'productName is mandatory').not().isEmpty(),
     check('description', 'description is mandatory').not().isEmpty(),
@@ -83,7 +83,7 @@ router.post(
 
 /**
  * @swagger
- * /api/v1/updateProduct/{id}:
+ * /api/v1/products/{id}:
  *   put:
  *     summary: Update a product by ID
  *     tags: [Products]
@@ -117,7 +117,7 @@ router.post(
  */
 
 router.put(
-  '/updateProduct/:id',
+  '/products/:id',
   [
     check('productName', 'productName is mandatory').not().isEmpty(),
     check('description', 'description is mandatory').not().isEmpty(),
@@ -129,7 +129,7 @@ router.put(
 
 /**
  * @swagger
- * /api/v1/deleteProduct/{id}:
+ * /api/v1/products/{id}:
  *   delete:
  *     summary: Delete a product by ID
  *     tags: [Products]
@@ -155,7 +155,7 @@ router.put(
 
 
 router.delete(
-  '/deleteProduct/:id',
+  '/products/:id',
   deleteProduct
 );
 
@@ -163,7 +163,7 @@ router.delete(
 
 /**
  * @swagger
- * /api/v1/searchProduct/{id}:
+ * /api/v1/products/{id}:
  *   get:
  *     summary: Get a product by ID
  *     tags: [Products]
@@ -186,7 +186,7 @@ router.delete(
  */
 
 router.get(
-  '/searchProduct/:id',
+  '/products/:id',
   searchProductById
 );
 
@@ -226,7 +226,7 @@ router.get(
 
 /**
  * @swagger
- * /api/v1/allProducts:
+ * /api/v1/products:
  *   get:
  *     summary: Get all products
  *     tags: [Products]
@@ -240,13 +240,13 @@ router.get(
  */
 
 router.get(
-  '/allProducts',
+  '/products',
   getAllProducts
 );
 
 /**
  * @swagger
- * /api/v1/searchRateAverage/{id}:
+ * /products/searchRateAverage/{id}:
  *   get:
  *     summary: Get the average rate of a product by ID
  *     tags: [Products]
@@ -269,7 +269,7 @@ router.get(
  */
 
 router.get(
-  '/searchRateAverage/:id',
+  '/products/searchRateAverage/:id',
   searchRateAverageByProductId
 );
 

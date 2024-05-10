@@ -52,7 +52,7 @@ const { validateFields } = require('../middlewares/validateFields');
 
 /**
  * @swagger
- * /api/v1/signUp:
+ * /api/v1/users:
  *  post:
  *    summary: register user
  *    tags: [User]
@@ -73,7 +73,7 @@ const { validateFields } = require('../middlewares/validateFields');
  */
 
 router.post(
-  '/signUp', 
+  '/users', 
   [
     check('username', 'Username is mandatory').not().isEmpty(),
     check('email', 'Email is mandatory').isEmail(),
@@ -88,7 +88,7 @@ router.post(
 
 /**
  * @swagger
- * /api/v1/logIn:
+ * /api/v1/auth/logIn:
  *   post:
  *     summary: Log In
  *     tags: [User]
@@ -122,7 +122,7 @@ router.post(
  */
 
 router.post(
-  '/logIn', 
+  '/auth/logIn', 
   [
     check('email', 'Email is mandatory').isEmail(),
     check('password', 'Password is mandatory').not().isEmpty(),
@@ -133,7 +133,7 @@ router.post(
 
 /**
  * @swagger
- * /api/v1/updateUser/{id}:
+ * /api/v1/users/{id}:
  *   put:
  *     summary: Update user
  *     tags: [User]
@@ -183,7 +183,7 @@ router.post(
 
 
 router.put(
-  '/updateUser/:id',
+  '/users/:id',
   [
     check('username', 'Username is mandatory').not().isEmpty(),
     check('bio', 'Bio is mandatory').not().isEmpty(),
