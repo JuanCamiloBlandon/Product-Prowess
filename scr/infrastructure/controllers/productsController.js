@@ -188,10 +188,10 @@ const searchProductById = async (req, res = response) => {
         token = token.split(' ')[1];
 
         const idUser = await verifyToken(token, secret);
-
-        const existingProduct = await Products.findOne({ _id: productId });
-
-        if (!existingProduct) {
+        let existingProduct = '';
+        try {
+            existingProduct = await Products.findOne({ _id: productId });
+        } catch (error) {
             return res.status(404).json({
                 ok: false,
                 error: {
@@ -199,11 +199,12 @@ const searchProductById = async (req, res = response) => {
                 }
             });
         }
+        
 
         const user = await Users.findOne({ _id: idUser });
         const comments = await returnCommentsByIdProduct(productId);
 
-        res.json({
+        res.status(200).json({
             ok: true,
             msg: {
                 _id: existingProduct._id,
@@ -220,7 +221,7 @@ const searchProductById = async (req, res = response) => {
 
 
     } catch (error) {
-        return res.status(403).json({
+        return res.status(401).json({
             ok: false,
             error: {
                 message: error.message
@@ -278,7 +279,7 @@ const searchProductsByTagOrName = async (req, res = response) => {
         });
 
     } catch (error) {
-        return res.status(403).json({
+        return res.status(401).json({
             ok: false,
             error: {
                 message: error.message
@@ -304,10 +305,10 @@ const searchRateAverageByProductId = async (req, res = response) => {
         token = token.split(' ')[1];
 
         const idUser = await verifyToken(token, secret);
-
-        const existingProduct = await Products.findOne({ _id: productId });
-
-        if (!existingProduct) {
+        let existingProduct = "";
+        try {
+            existingProduct = await Products.findOne({ _id: productId });
+        } catch (error) {
             return res.status(404).json({
                 ok: false,
                 error: {
@@ -315,6 +316,7 @@ const searchRateAverageByProductId = async (req, res = response) => {
                 }
             });
         }
+         
 
         res.json({
             ok: true,
@@ -325,7 +327,7 @@ const searchRateAverageByProductId = async (req, res = response) => {
 
 
     } catch (error) {
-        return res.status(403).json({
+        return res.status(401).json({
             ok: false,
             error: {
                 message: error.message
@@ -351,7 +353,7 @@ const getAllProducts = async (req, res = response) => {
 
 
     } catch (error) {
-        return res.status(403).json({
+        return res.status(401).json({
             ok: false,
             error: {
                 message: error.message

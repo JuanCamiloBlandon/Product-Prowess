@@ -102,7 +102,7 @@ const searchCommentsByIdProduct = async (req, res = response) => {
             return res.status(404).json({
                 ok: false,
                 error: {
-                    message: 'The product to be commented on does not exist'
+                    message: 'The product does not exist'
                 }
             });
         }
@@ -116,7 +116,7 @@ const searchCommentsByIdProduct = async (req, res = response) => {
             }
         });
     } catch (error) {
-        return res.status(403).json({
+        return res.status(401).json({
             ok: false,
             error: {
                 message: 'Invalid Token'
