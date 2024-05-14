@@ -1,26 +1,32 @@
 <nav class="navbar">
     <div class="container-fluid">
         <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" (click)="toggleSearchModal()">
         </form>
         <div class="navbar-content">
             Productos
         </div>
     </div>
 </nav>
+<app-search-modal *ngIf="showSearchModal" (close)="toggleSearchModal()"></app-search-modal>
 <div class="container">
     <div [@fadeAnimation]="showForm ? 'hidden': 'visible'" class="content">
         <p class="public-text">Bienvenido a Product Prowess</p>
         <p class="text-blue">Aquí puedes</p>
         <p class="text-price">publicar tus productos tecnológicos.</p>
-        <button>Ingresar</button>
-        <button (click)="showFormRegister()">Registrarse</button>
+        <button (click)="toggleLoginModal()">Ingresar</button>
+        <button (click)="toggleRegisterModal()">Registrarse</button>
     </div>
     <div class="imageHome">
         <img src="assets/image/homepage.png" alt="homepage">
     </div>
-    <div *ngIf="showForm" class="register-form">
-        <app-register></app-register>
+    <div *ngIf="showLoginModal">
+        <app-login [showLogin]="showLoginModal" (showLoginModal)="showLoginModal = $event" ></app-login>
+    </div>
+    <div *ngIf="showRegisterModal">
+        <app-register [showModal]="showRegisterModal" (showModalChange)="showRegisterModal = $event" ></app-register>
+    </div>
+    <div *ngIf="showSearchModal" class="search-modal">
     </div>
     <router-outlet></router-outlet>
 </div>

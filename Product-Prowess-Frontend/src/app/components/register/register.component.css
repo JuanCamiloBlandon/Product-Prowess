@@ -1,15 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
 
-.form-Registercontainer {
+.container{
     position: absolute;
-    border: 2px solid;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1;
+}
+
+.modal-content  {
+    position: fixed;
+    top: 25%;
+    left: 60%;
+    width: 550px;
+    height: 250px;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 5px;
+}
+
+
+.form-Registercontainer {
+    margin: 0 auto;
     width: 340px;
-    bottom: 110px;
-    height: 450px;
-    margin-left: -200px;
+    border: 2px solid #c200ff;
+    border-radius: 10px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     font-family: 'Kanit', sans-serif;
 }
 
@@ -50,16 +74,4 @@
     background-color: #c200ff;
     color: #fff;
     border-color: #c200ff;
-}
-
-@keyframes fadeInOut {
-    0% {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { trigger, state, style, animate, transition} from '@angular/animations';
 
@@ -17,10 +17,27 @@ import { trigger, state, style, animate, transition} from '@angular/animations';
 })
 export class AppComponent {
   showForm: boolean = false;
+  showSearchModal: boolean = false;
+  showRegisterModal: boolean = false;
+  showLoginModal: boolean = false;
+
+  @Output() registerModalChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() loginModalChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private router: Router){}
 
-  showFormRegister(): void {
-    this.showForm = true;
+  toggleSearchModal(): void {
+    this.showSearchModal = !this.showSearchModal;
   }
+
+  toggleRegisterModal(): void{
+    this.showRegisterModal = !this.showRegisterModal;
+    this.registerModalChange.emit(this.showRegisterModal);
+  }
+
+  toggleLoginModal(): void {
+    this.showLoginModal = !this.showLoginModal;
+    this.loginModalChange.emit(this.showLoginModal);
+  }
+
 }
