@@ -1,10 +1,13 @@
 const express = require('express');
 const dbConnection = require('./scr/infrastructure/database/config');
+const Dev_dbConnection = require('./scr/infrastructure/database/devConfig');
+const Test_dbConnection = require('./scr/infrastructure/database/testConfig');
 require('dotenv').config();
 const path = require("path");
 
 // Env VARS
-const { APP_PORT } = process.env
+const { APP_PORT, NODE_ENV } = process.env
+
 
 // Swagger
 const swaggerUI = require("swagger-ui-express");
@@ -32,7 +35,25 @@ const app = express();
 app.use(express.json());
 
 // DB CONNECTION
-dbConnection()
+const startServer = () => {
+  if (NODE_ENV === "production") {
+    dbConnection();
+  } else if (NODE_ENV === "development") {
+    Dev_dbConnection();
+  } else if (NODE_ENV === "test") {
+    Test_dbConnection();
+  }
+
+  const server = app.listen(APP_PORT, () => {
+    console.log(`Servidor corriendo en puerto: ${APP_PORT}`);
+  });
+
+  return server;
+};
+
+if(NODE_ENV != "test"){
+  startServer();
+}
 
 
 // app routes
@@ -41,6 +62,5 @@ app.use('/api/v1', require('./scr/infrastructure/routes/productsRoute') );
 app.use('/api/v1', require('./scr/infrastructure/routes/commentsRoute') )
 app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerJsDoc(swaggerSpec)));
 
-app.listen(APP_PORT, () => {
-    console.log(`Servidor corriendo en puerto: ${APP_PORT}`);
-  });
+
+module.exports = { app, startServer };
