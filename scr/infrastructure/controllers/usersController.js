@@ -6,7 +6,7 @@ const secret = process.env.SECRET;
 
 const createUser = async (req, res = response) => {
   const { username, email, password, bio, avatar } = req.body
-
+  console.log('Datos recibidos:', req.body);
   try {
     let user = await usersModel.findOne({ email });
 
@@ -36,6 +36,7 @@ const createUser = async (req, res = response) => {
       },
     });
   } catch (error) {
+    console.error('Error al crear usuario:', error);
     res.status(500).json({
       ok: false,
       error: {

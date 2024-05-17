@@ -1,7 +1,13 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
+import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { HttpClientModule } from "@angular/common/http";
+import { RegisterService } from "./services/register.service";
+import { ButtonModule} from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from "primeng/api";
 
 
 import {routes} from "./app.routes";
@@ -26,11 +32,20 @@ import { SearchModalComponent } from "./components/search-modal/search-modal.com
 
     imports: [
         BrowserModule,
+        FormsModule,
+        HttpClientModule,
         BrowserAnimationsModule,
-        RouterModule.forRoot(routes)
+        ButtonModule,
+        ToastModule,
+        RouterModule.forRoot(routes),
+        
     ],
 
-    providers: [],
+    providers: [
+        RegisterService,
+        MessageService
+        
+    ],
     bootstrap: [AppComponent]
 })
 
