@@ -5,8 +5,12 @@ import { RouterModule } from "@angular/router";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from "@angular/common/http";
 import { RegisterService } from "./services/register.service";
+
+
 import { ButtonModule} from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
+import { AvatarModule} from 'primeng/avatar';
+import { AvatarGroupModule} from 'primeng/avatargroup';
 import { MessageService } from "primeng/api";
 
 
@@ -37,6 +41,8 @@ import { SearchModalComponent } from "./components/search-modal/search-modal.com
         BrowserAnimationsModule,
         ButtonModule,
         ToastModule,
+        AvatarModule,
+        AvatarGroupModule,
         RouterModule.forRoot(routes),
         
     ],

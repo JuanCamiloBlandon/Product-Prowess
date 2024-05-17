@@ -1,4 +1,5 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { RegisterService } from '../../services/register.service';
 
@@ -23,8 +24,15 @@ export class RegisterComponent {
 
   constructor(
     private messageService: MessageService,
-    private registerService: RegisterService
-  ) { };
+    private registerService: RegisterService,
+    private route: ActivatedRoute
+  ) { 
+    this.route.queryParams.subscribe(params => {
+      if(params['avatar']){
+        this.avatar = params['avatar'];
+      }
+    });
+  };
 
   closeModal(): void {
     console.log('Cerrando el modal...');
@@ -34,7 +42,7 @@ export class RegisterComponent {
 
   registerUser(): void {
     const formData = {
-     username: this.username,
+      username: this.username,
       email: this.email,
       password: this.password,
       bio: this.bio,
@@ -43,6 +51,7 @@ export class RegisterComponent {
     console.log('Datos del formulario:', formData);
     this.registerService.registerUser(formData).subscribe(
       (response) => {
+        console.log('Respuesta del servidor:', response);
         if (response.ok) {
           this.showSuccessMessage('Usuario registrado correctamente');
           this.resetForm();
@@ -62,10 +71,11 @@ export class RegisterComponent {
     this.messageService.add({ severity: 'success', detail: message });
   }
 
-  private showErrorMessage(message: string): void {
-    this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
+  public showErrorMessage(message: string): void {
+    this.messageService.add({ severity: 'error',  detail: message });
   }
   private resetForm(): void {
+    console.log('Resetting form...');
     this.username = '';
     this.email = '';
     this.password = '';
