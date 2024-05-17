@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">21.05% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/19</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">22.22% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/18</span>
+                <span class='fraction'>18/18</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -97,66 +97,66 @@
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
+<span class="cline-any cline-yes">3x</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
 const commentModel = require('../../infrastructure/models/commentsModel');
 const Comment = require('../../domain/entities/comment');
 const productsModel = require('../../infrastructure/models/productsModel');
 &nbsp;
 class ProductsService {
-<span class="fstat-no" title="function not covered" >    as</span>ync createComment(productData, userId, productId) {
-<span class="cstat-no" title="statement not covered" >        try {</span>
-            const { content, rate} = <span class="cstat-no" title="statement not covered" >productData;</span>
+    async createComment(productData, userId, productId) {
+        try {
+            const { content, rate} = productData;
             let existingProduct;
-<span class="cstat-no" title="statement not covered" >            try {</span>
-<span class="cstat-no" title="statement not covered" >                existingProduct = await productsModel.findById(productId);</span>
+            try {
+                existingProduct = await productsModel.findById(productId);
             } catch (error) {
-<span class="cstat-no" title="statement not covered" >                throw new Error('The product to be commented on does not exist');</span>
+                throw new Error('The product to be commented on does not exist');
             }
 &nbsp;
             
-            const comment = <span class="cstat-no" title="statement not covered" >new Comment(productId, userId, content, rate);</span>
-            const newComment = <span class="cstat-no" title="statement not covered" >await commentModel.create(comment);</span>
-<span class="cstat-no" title="statement not covered" >            await newComment.save();</span>
+            const comment = new Comment(productId, userId, content, rate);
+            const newComment = await commentModel.create(comment);
+            await newComment.save();
 &nbsp;
-            const comments = <span class="cstat-no" title="statement not covered" >await commentModel.find({ productId });</span>
-            const totalRates = <span class="cstat-no" title="statement not covered" >comments.reduce(<span class="fstat-no" title="function not covered" >(a</span>cc, curr) =&gt; <span class="cstat-no" title="statement not covered" >acc + curr.rate,</span> 0);</span>
-            const rateAverage = <span class="cstat-no" title="statement not covered" >totalRates / comments.length;</span>
-<span class="cstat-no" title="statement not covered" >            existingProduct.rateAverage = rateAverage;</span>
-<span class="cstat-no" title="statement not covered" >            await existingProduct.save();</span>
+            const comments = await commentModel.find({ productId });
+            const totalRates = comments.reduce((acc, curr) =&gt; acc + curr.rate, 0);
+            const rateAverage = totalRates / comments.length;
+            existingProduct.rateAverage = rateAverage;
+            await existingProduct.save();
         } catch (error) {
-<span class="cstat-no" title="statement not covered" >            throw new Error(error);</span>
+            throw new Error(error);
         }
     }
 &nbsp;
@@ -169,7 +169,7 @@ module.exports = new ProductsService();</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-16T19:24:15.880Z
+                at 2024-05-17T06:17:35.899Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

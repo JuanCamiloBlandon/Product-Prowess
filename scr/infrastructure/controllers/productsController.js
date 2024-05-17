@@ -29,7 +29,12 @@ const createProduct = async (req, res = response) => {
 
         res.status(200).json({
             ok: true,
-            msg: 'Successfully created product'
+            msg: 'Successfully created product',
+            product: {
+                id: newProduct.id, productName: newProduct.productName, description: newProduct.description, url: newProduct.url,
+                tags: newProduct.tags, userId: newProduct.userId, rateAverage: newProduct.rateAverage, createdAt: newProduct.createdAt, 
+                updatedAt: newProduct.updatedAt
+              }
         });
     } catch (error) {
         if (error.message === 'Error: Product already exists') {
@@ -106,7 +111,6 @@ const updateProduct = async (req, res = response) => {
                 }
             });
         }
-        console.log(error.message)
         res.status(500).json({
             ok: false,
             error: {
@@ -143,7 +147,6 @@ const deleteProduct = async (req, res = response) => {
 
 
     } catch (error) {
-        console.log(error)
         if (error.message === 'Error: The product you want to delete is not in your product list') {
             return res.status(404).json({
                 ok: false,
@@ -318,7 +321,7 @@ const searchRateAverageByProductId = async (req, res = response) => {
         }
          
 
-        res.json({
+        res.status(200).json({
             ok: true,
             msg: {
                 rateAverage: existingProduct.rateAverage
@@ -341,7 +344,20 @@ const searchRateAverageByProductId = async (req, res = response) => {
 
 const getAllProducts = async (req, res = response) => {
     const productId = req.params.id;
+    let token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(401).json({
+            ok: false,
+            error: {
+                message: 'Missing Token'
+            }
+        });
+    }
     try {
+        token = token.split(' ')[1];
+        const idUser = await verifyToken(token, secret);
+
         const products = await Products.find({});
 
         res.status(200).json({
