@@ -1,16 +1,13 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { RegisterService } from '../../services/register.service';
-
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-
 export class RegisterComponent {
   @Input() showModal: boolean = false;
   @Output() showModalChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -20,19 +17,14 @@ export class RegisterComponent {
   password: string = '';
   bio: string = '';
   avatar: string = '';
+  showAvatarSelection: boolean = false;
 
 
   constructor(
     private messageService: MessageService,
     private registerService: RegisterService,
-    private route: ActivatedRoute
-  ) { 
-    this.route.queryParams.subscribe(params => {
-      if(params['avatar']){
-        this.avatar = params['avatar'];
-      }
-    });
-  };
+    private router: Router
+  ) { };
 
   closeModal(): void {
     console.log('Cerrando el modal...');
@@ -41,6 +33,7 @@ export class RegisterComponent {
   }
 
   registerUser(): void {
+  
     const formData = {
       username: this.username,
       email: this.email,
@@ -51,10 +44,10 @@ export class RegisterComponent {
     console.log('Datos del formulario:', formData);
     this.registerService.registerUser(formData).subscribe(
       (response) => {
-        console.log('Respuesta del servidor:', response);
         if (response.ok) {
           this.showSuccessMessage('Usuario registrado correctamente');
-          this.resetForm();
+          console.log('Redirigiendo al usuario a la página principal...');
+          window.location.href = '/';
         } else {
           console.error('Error al registrar usuario', response.error.message);
           this.showErrorMessage('Error al registrar el usuario');
@@ -71,9 +64,10 @@ export class RegisterComponent {
     this.messageService.add({ severity: 'success', detail: message });
   }
 
-  public showErrorMessage(message: string): void {
-    this.messageService.add({ severity: 'error',  detail: message });
+  private showErrorMessage(message: string): void {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
   }
+
   private resetForm(): void {
     console.log('Resetting form...');
     this.username = '';
@@ -81,5 +75,14 @@ export class RegisterComponent {
     this.password = '';
     this.bio = '';
     this.avatar = '';
+  }
+
+  toggleAvatarSelection(): void {
+    this.showAvatarSelection = !this.showAvatarSelection;
+  }
+
+  onAvatarSelected(avatar: string): void {
+    this.avatar = avatar;
+    this.showAvatarSelection = false;
   }
 }

@@ -7,40 +7,39 @@
                         <div class="form-header">
                             <h2 class="form-title">Formulario de registro</h2>
                         </div>
+                        <div *ngIf="showAvatarSelection">
+                            <app-avatars (avatarSelected)="onAvatarSelected($event)"></app-avatars>
+                        </div>
                         <div class="text-center my-3">
-                            <p-avatar 
-                            icon="pi pi-user" 
-                            styleClass="mr-2" 
-                            size="xlarge" 
-                            shape="circle" >
+                            <p-avatar *ngIf="avatar" [image]="avatar" styleClass="mr-2" size="xlarge" shape="circle">
                             </p-avatar>
-                            <i class="pi pi-user-edit user-icon"></i>
+                            <p-avatar *ngIf="!avatar" icon="pi pi-user" styleClass="mr-2" size="xlarge" shape="circle">
+                            </p-avatar>
+                            <i class="pi pi-user-edit user-icon" (click)="toggleAvatarSelection()"></i>
                             <input type="hidden" name="avatar" [(ngModel)]="avatar">
                         </div>
                         <form (ngSubmit)="registerUser()">
                             <div class="mb-3">
-                                <label >Nombre Completo</label>
+                                <label>Nombre Completo</label>
                                 <input type="text" name="username" class="form-control" placeholder="Ingrese su nombre"
                                     [(ngModel)]="username">
                             </div>
                             <div class="mb-3">
-                                <label >Correo</label>
+                                <label>Correo</label>
                                 <input type="email" name="email" class="form-control" placeholder="correo@micorreo.com"
                                     [(ngModel)]="email">
                             </div>
                             <div class="mb-3">
-                                <label >Contraseña</label>
+                                <label>Contraseña</label>
                                 <input type="password" name="password" class="form-control"
                                     placeholder="Ingrese su contraseña" [(ngModel)]="password">
                             </div>
                             <div class="mb-3">
-                                <label >Biografía</label>
+                                <label>Biografía</label>
                                 <input type="text" name="bio" class="form-control" placeholder="Ingrese su biografía"
                                     [(ngModel)]="bio">
                             </div>
-                            <button type="submit" pButton pRipple>
-                                Registrarse
-                            </button>
+                            <button type="submit" pButton pRipple>Registrarse</button>
                         </form>
                     </div>
                 </div>

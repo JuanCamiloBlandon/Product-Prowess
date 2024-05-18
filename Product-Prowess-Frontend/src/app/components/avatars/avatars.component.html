@@ -1,0 +1,6 @@
+
+<div class="avatar-selection">
+    <div class="card" *ngFor="let avatar of avatars" (click)="selectAvatar(avatar)">
+        <img [src]="avatar" alt="Avatar" style="cursor: pointer;">
+    </div>
+</div>
