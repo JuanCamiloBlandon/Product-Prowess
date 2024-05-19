@@ -21,10 +21,6 @@ class UserService {
     
             const user = await userModel.findById(userId);
     
-            if (!user) {
-                throw new Error('User not found');
-            }
-    
             user.updatedAt = new Date();
     
             if (username) {

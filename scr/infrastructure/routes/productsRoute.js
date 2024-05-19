@@ -1,7 +1,8 @@
 const { Router } = require('express');
 const router = Router();
 
-const { createProduct, updateProduct, deleteProduct, searchProductById, searchProductsByTagOrName, searchRateAverageByProductId,getAllProducts} = require('../controllers/productsController');
+const { createProduct, updateProduct, deleteProduct, searchProductById, searchProductsByTagOrName, 
+        searchRateAverageByProductId,getAllProducts, searchProductsByDate, getProductsWithFilters} = require('../controllers/productsController');
 const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validateFields');
 
@@ -246,7 +247,7 @@ router.get(
 
 /**
  * @swagger
- * /products/searchRateAverage/{id}:
+ * /api/v1/products/searchRateAverage/{id}:
  *   get:
  *     summary: Get the average rate of a product by ID
  *     tags: [Products]
@@ -273,5 +274,54 @@ router.get(
   searchRateAverageByProductId
 );
 
+/**
+ * @swagger
+ * /api/v1/product/getProductsWithFilters:
+ *   post:
+ *     summary: Get products based on search criteria
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               tags:
+ *                 type: array
+ *               minRating:
+ *                 type: number
+ *               startDate:
+ *                 type: string
+ *                 format: date
+ *                 description: Date in format (YYYY-MM-DD)
+ *               endDate:
+ *                 type: string
+ *                 format: date
+ *                 description: Date in format (YYYY-MM-DD)
+ *             example:
+ *              name:      "elec"
+ *              tags:      ["Hogar"]
+ *              minRating: 0
+ *              startDate: "2024-05-10"
+ *              "endDate": "2024-05-19"
+ *     responses:
+ *       200:
+ *         description: Products retrieved successfully
+ *       401:
+ *         description: Unauthorized - Missing or invalid token
+ *       500:
+ *         description: Something went wrong, please contact the admin
+ */
+
+
+router.post(
+  '/product/getProductsWithFilters',
+  getProductsWithFilters
+);
 
 module.exports = router;

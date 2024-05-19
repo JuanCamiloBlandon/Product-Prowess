@@ -12,7 +12,6 @@ class ProductsService {
                 throw new Error('Product already exists');
             }
 
-            console.log(productName, userId)
             const product = new Product(productName, description, url, tags, userId);
             const newProduct = await productsModel.create(product);
             await newProduct.save();

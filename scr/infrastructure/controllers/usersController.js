@@ -11,7 +11,7 @@ const createUser = async (req, res = response) => {
     let user = await usersModel.findOne({ email });
 
     if (user) {
-      return res.status(400).json({
+      return res.status(409).json({
         ok: false,
         error: {
           message: 'User already exists'
@@ -66,10 +66,10 @@ const updateUser = async (req, res = response) => {
       const decodedUserId = await verifyToken(token, secret);
 
       if (userId !== decodedUserId) {
-          return res.status(403).json({
+          return res.status(404).json({
               ok: false,
               error: {
-                  message: 'The Token does not match the user ID'
+                  message: 'User not found'
               }
           });
       }
@@ -82,15 +82,6 @@ const updateUser = async (req, res = response) => {
           msg: 'User data updated successfully',
       });
   } catch (error) {
-      if (error.message === 'Error: User not found') {
-          return res.status(404).json({
-              ok: false,
-              error: {
-                  message: 'User not found'
-              }
-          });
-      }
-      
       if (error.message === 'Invalid Token') {
           return res.status(401).json({
               ok: false,

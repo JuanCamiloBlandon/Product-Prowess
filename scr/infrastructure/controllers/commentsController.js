@@ -54,6 +54,7 @@ const createComment = async (req, res = response) => {
         res.status(500).json({
             ok: false,
             error: {
+                message: error,
                 message: 'Something went wrong, please contact the admin'
             }
         });
