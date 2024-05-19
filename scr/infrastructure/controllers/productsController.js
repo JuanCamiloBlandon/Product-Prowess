@@ -1,10 +1,10 @@
 const { response } = require('express');
 const Products = require('../models/productsModel');
+const Follow = require('../models/followsModel');
 const Users = require('../models/usersModel');
 const productService = require('../../application/services/productService');
 const { verifyToken } = require('./tokenController');
 const { returnCommentsByIdProduct } = require('./commentsController');
-const mongoose = require('mongoose');
 const secret = process.env.SECRET;
 
 const createProduct = async (req, res = response) => {
@@ -38,7 +38,7 @@ const createProduct = async (req, res = response) => {
         });
     } catch (error) {
         if (error.message === 'Error: Product already exists') {
-            return res.status(404).json({
+            return res.status(409).json({
                 ok: false,
                 error: {
                     message: 'Product already exists'
@@ -376,11 +376,65 @@ const getAllProducts = async (req, res = response) => {
             }
         });
     }
-
-
-
 };
 
+const getProductsWithFilters = async (req, res = response) => {
+    const { name, tags, minRating, startDate, endDate } = req.body;
+    let token = req.headers.authorization;
+    if (!token) {
+        return res.status(401).json({
+            ok: false,
+            error: {
+                message: 'Missing Token'
+            }
+        });
+    }
+    try {
+        let query = {};
+
+        if (name) {
+            query.productName = { $regex: name, $options: 'i' };
+        }
+        if (tags) {
+            query.tags = { $in: tags };
+        }
+        if (minRating) {
+            query.rateAverage = { $gte: minRating }; 
+        }
+        if (startDate && endDate) {
+            query.createdAt = {
+                $gte: new Date(startDate),
+                $lte: new Date(endDate)
+            };
+        } else if (startDate) {
+            query.createdAt = { $gte: new Date(startDate) };
+        } else if (endDate) {
+            query.createdAt = { $lte: new Date(endDate) };
+        }
+
+        const products = await Products.find(query);
+
+        res.status(200).json({
+            ok: true,
+            products
+        });
+    } catch (error) {
+        if (error.message === 'Invalid Token') {
+            return res.status(401).json({
+                ok: false,
+                error: {
+                    message: 'Invalid Token'
+                }
+            });
+        }
+        res.status(500).json({
+            ok: false,
+            error: {
+                message: 'Something went wrong, please contact the admin'
+            }
+        });
+    }
+};
 
 
 module.exports = {
@@ -390,5 +444,6 @@ module.exports = {
     searchProductById,
     searchProductsByTagOrName,
     searchRateAverageByProductId,
-    getAllProducts
+    getAllProducts,
+    getProductsWithFilters
 };

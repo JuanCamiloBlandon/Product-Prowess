@@ -1,7 +1,8 @@
 const { Router } = require('express');
 const router = Router();
 
-const { createProduct, updateProduct, deleteProduct, searchProductById, searchProductsByTagOrName, searchRateAverageByProductId,getAllProducts} = require('../controllers/productsController');
+const { createProduct, updateProduct, deleteProduct, searchProductById, searchProductsByTagOrName, 
+        searchRateAverageByProductId,getAllProducts, searchProductsByDate, getProductsWithFilters} = require('../controllers/productsController');
 const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validateFields');
 
@@ -273,5 +274,9 @@ router.get(
   searchRateAverageByProductId
 );
 
+router.get(
+  '/product/getProductsByFilters',
+  getProductsWithFilters
+);
 
 module.exports = router;

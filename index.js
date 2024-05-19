@@ -58,8 +58,9 @@ if(NODE_ENV != "test"){
 
 // app routes
 app.use('/api/v1', require('./scr/infrastructure/routes/usersRoute') );
-app.use('/api/v1', require('./scr/infrastructure/routes/productsRoute') );
-app.use('/api/v1', require('./scr/infrastructure/routes/commentsRoute') )
+app.use('/api/v1', require('./scr/infrastructure/routes/productsRoute'));
+app.use('/api/v1', require('./scr/infrastructure/routes/commentsRoute'));
+app.use('/api/v1', require('./scr/infrastructure/routes/followRoute'));
 app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerJsDoc(swaggerSpec)));
 
 
