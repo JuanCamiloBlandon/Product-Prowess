@@ -66,8 +66,10 @@ const { validateFields } = require('../middlewares/validateFields');
  *    responses:
  *      200: 
  *        description: user registered
- *      400:
+ *      409:
  *        description: User already exists
+ *      400:
+ *        description: the json body is poorly structured
  *      500: 
  *        description: Something went worng, please contact to admin
  */
@@ -119,6 +121,8 @@ router.post(
  *         description: Wrong credentials
  *       500:
  *         description: Something went wrong, please contact the administrator
+ *       400:
+ *         description: the json body is poorly structured
  */
 
 router.post(
@@ -169,14 +173,12 @@ router.post(
  *     responses:
  *       200:
  *         description: User updated successfully
- *       400:
- *         description: Bad request - missing or invalid parameters
  *       401:
  *         description: Unauthorized - Missing or invalid token
  *       404:
+ *         description: The json body is poorly structured
+ *       400:
  *         description: User not found
- *       403:
- *         description: The Token does not match the user ID
  *       500:
  *         description: Something went wrong, please contact the administrator
  */
