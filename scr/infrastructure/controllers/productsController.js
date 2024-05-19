@@ -38,7 +38,7 @@ const createProduct = async (req, res = response) => {
         });
     } catch (error) {
         if (error.message === 'Error: Product already exists') {
-            return res.status(409).json({
+            return res.status(404).json({
                 ok: false,
                 error: {
                     message: 'Product already exists'
@@ -390,6 +390,8 @@ const getProductsWithFilters = async (req, res = response) => {
         });
     }
     try {
+        token = token.split(' ')[1];
+        const idUser = await verifyToken(token, secret);
         let query = {};
 
         if (name) {

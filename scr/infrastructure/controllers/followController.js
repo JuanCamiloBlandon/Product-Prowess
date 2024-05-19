@@ -42,6 +42,14 @@ const createFollow = async (req, res = response) => {
                 }
             });
         }
+        if (error.message === 'Error: The user you are trying to follow does not exist') {
+            return res.status(404).json({
+                ok: false,
+                error: {
+                    message: 'The user you are trying to follow does not exist'
+                }
+            });
+        }
         if (error.message === 'Error: You are already following this user') {
             return res.status(409).json({
                 ok: false,
@@ -89,7 +97,7 @@ const deleteFollow = async (req, res = response) => {
         });
     } catch (error) {
         if (error.message === 'Error: You are not currently following this person') {
-            return res.status(404).json({
+            return res.status(409).json({
                 ok: false,
                 error: {
                     message: 'You are not currently following this person'

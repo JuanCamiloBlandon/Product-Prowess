@@ -532,4 +532,73 @@ describe('Test Products Endponits', () => {
       expect(response.body).toBeInstanceOf(Object);
     });
   });
+  describe('getProductsWithFilters', () => {
+    beforeAll(async() => {
+      const userResponse = await request(app)
+      .post('/api/v1/users')
+      .send({
+        username: 'Angie',
+        email: 'angie@gmail.com',
+        password: '123456',
+        bio: "Descripción del perfil de usuario"
+      });
+
+      const loginResponse = await request(app)
+      .post('/api/v1/auth/logIn')
+      .send({
+        email: 'angie@gmail.com',
+        password: '123456',
+      });
+
+      token = loginResponse.body.token;
+
+      const productResponse = await request(app)
+      .post('/api/v1/products/')
+      .set('Authorization', `Bearer ${token}`) // Agrega el token de autorización al encabezado
+      .send({ 
+        productName: 'Laptop Industrial',
+        description: 'Hermosa Laptop industrial, muy potente y facil de usar',
+        url: 'https://example.com/product',
+        tags: ['Hogar', 'Electrodomesticos']
+      });
+      productId = productResponse.body.product.id;
+      productName = productResponse.body.product.productName;
+      productTag = productResponse.body.product.tags[1];
+
+    });
+    it('should get product with filter', async () => {
+      const response = await request(app)
+      .post('/api/v1/product/getProductsWithFilters')
+      .set('Authorization', `Bearer ${token}`) // Agrega el token de autorización al encabezado
+      .send({
+        "name": "Laptop Industrial",
+        "tags": "Hogar",
+        "minRating": 0,
+        "startDate": "2024-05-10",
+        "endDate": "2029-05-19"
+      });
+
+      expect(response.status).toBe(200);
+      expect(response.headers['content-type']).toMatch(/json/);
+      expect(response.body).toBeInstanceOf(Object);
+    });
+
+    it('should return 401 if token is invalid', async () => {
+      const response = await request(app)
+      .post('/api/v1/product/getProductsWithFilters')
+      .set('Authorization', `Bearer ${token+"1"}`) // Agrega el token invalido
+      .send({
+        "name": "Laptop Industrial",
+        "tags": "Hogar",
+        "minRating": 0,
+        "startDate": "2024-05-10",
+        "endDate": "2029-05-19"
+      });
+
+      expect(response.status).toBe(401);
+      expect(response.headers['content-type']).toMatch(/json/);
+      expect(response.body).toBeInstanceOf(Object);
+    });
+    
+  });
 });

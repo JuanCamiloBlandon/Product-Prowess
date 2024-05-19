@@ -80,7 +80,7 @@ router.post(
  *         description: Successfully delete follow
  *       401:
  *         description: Unauthorized - Missing or invalid token
- *       404:
+ *       409:
  *         description: You are not currently following this person
  *       500:
  *         description: Something went wrong, please contact the admin

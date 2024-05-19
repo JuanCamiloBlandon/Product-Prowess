@@ -6,12 +6,15 @@ class FollowService {
     async createFollow(followData, userId) {
         try {
             const {followedUserId} = followData;
-
-            const verifyFollow = await followModel.findOne({
-                userId: userId,
-                followedUserId: followedUserId
-            })
-
+            let verifyFollow;
+            try {
+                verifyFollow = await followModel.findOne({
+                    userId: userId,
+                    followedUserId: followedUserId
+                })
+            } catch (error) {
+                throw new Error('The user you are trying to follow does not exist')
+            }
             if (verifyFollow) {
                 throw new Error('You are already following this user');
             }
