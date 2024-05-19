@@ -12,6 +12,8 @@ import { ToastModule } from 'primeng/toast';
 import { AvatarModule} from 'primeng/avatar';
 import { AvatarGroupModule} from 'primeng/avatargroup';
 import { MessageService } from "primeng/api";
+import { PanelModule } from 'primeng/panel';
+import { CardModule } from 'primeng/card';
 
 
 import {routes} from "./app.routes";
@@ -45,6 +47,8 @@ import { AvatarsComponent } from "./components/avatars/avatars.component";
         ToastModule,
         AvatarModule,
         AvatarGroupModule,
+        PanelModule,
+        CardModule,
         RouterModule.forRoot(routes),
         
     ],
