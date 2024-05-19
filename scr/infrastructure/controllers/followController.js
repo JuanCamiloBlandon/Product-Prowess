@@ -34,6 +34,14 @@ const createFollow = async (req, res = response) => {
               }
         });
     } catch (error) {
+        if (error.message === 'Invalid Token') {
+            return res.status(401).json({
+                ok: false,
+                error: {
+                    message: 'Invalid Token'
+                }
+            });
+        }
         if (error.message === 'Error: You are already following this user') {
             return res.status(409).json({
                 ok: false,
@@ -53,6 +61,7 @@ const createFollow = async (req, res = response) => {
 };
 
 const deleteFollow = async (req, res = response) => {
+    const {followedUserId} = req.body;
     let token = req.headers.authorization;
 
     if (!token) {
@@ -73,7 +82,7 @@ const deleteFollow = async (req, res = response) => {
 
         res.status(200).json({
             ok: true,
-            msg: 'Successfully delete unfollow',
+            msg: 'Successfully delete follow',
             Follow: {
                 id: newunFollow.id, userId: newunFollow.userId, followedUserId: newunFollow.followedUserId
               }
@@ -108,7 +117,7 @@ const deleteFollow = async (req, res = response) => {
 const getFollowers = async (req, res = response) => {
     const followedUserId = req.params.id;
     let token = req.headers.authorization;
-
+    let followers;
     if (!token) {
         return res.status(401).json({
             ok: false,
@@ -121,9 +130,13 @@ const getFollowers = async (req, res = response) => {
     try {
         token = token.split(' ')[1];
         const userId = await verifyToken(token, secret);
-
-        const followers = await Follow.find({ followedUserId: followedUserId }).populate('userId');
-        followers.map(follow => follow.userId);
+        try {
+            followers = await Follow.find({ followedUserId: followedUserId }).populate('userId');
+            followers.map(follow => follow.userId);
+        } catch (error) {
+            throw new Error('The user you are trying to search for does not exist')
+        }
+        
 
         res.status(200).json({
             ok: true,
@@ -132,11 +145,11 @@ const getFollowers = async (req, res = response) => {
               }
         });
     } catch (error) {
-        if (error.message === 'Error: You are not currently following this person') {
+        if (error.message === 'The user you are trying to search for does not exist') {
             return res.status(404).json({
                 ok: false,
                 error: {
-                    message: 'You are not currently following this person'
+                    message: 'The user you are trying to search for does not exist'
                 }
             });
         }
@@ -158,9 +171,11 @@ const getFollowers = async (req, res = response) => {
     }
 }
 
+
 const getFollowings = async (req, res = response) => {
     const followUserId = req.params.id;
     let token = req.headers.authorization;
+    let followings;
 
     if (!token) {
         return res.status(401).json({
@@ -174,9 +189,13 @@ const getFollowings = async (req, res = response) => {
     try {
         token = token.split(' ')[1];
         const userId = await verifyToken(token, secret);
-
-        const followings = await Follow.find({ userId: followUserId }).populate('followedUserId');
-        followings.map(follow => follow.userId);
+        try {
+            followings = await Follow.find({ userId: followUserId }).populate('followedUserId');
+            followings.map(follow => follow.userId);
+        } catch (error) {
+            throw new Error('The user you are trying to search for does not exist')
+        }
+        
 
         res.status(200).json({
             ok: true,
@@ -185,6 +204,14 @@ const getFollowings = async (req, res = response) => {
               }
         });
     } catch (error) {
+        if (error.message === 'The user you are trying to search for does not exist') {
+            return res.status(404).json({
+                ok: false,
+                error: {
+                    message: 'The user you are trying to search for does not exist'
+                }
+            });
+        }
         if (error.message === 'Invalid Token') {
             return res.status(401).json({
                 ok: false,

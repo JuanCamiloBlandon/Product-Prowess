@@ -35,18 +35,17 @@ class FollowService {
                     followedUserId: followedUserId
                   });
             } catch (error) {
-                console.log(error.message)
                 throw new Error('You are not currently following this person')
             }
-            
             if (!unfollow) {
                 throw new Error('You are not currently following this person')
             }
-
+            return unfollow
         } catch (error) {
             throw new Error(error);
         }
     }
+
     
 }
 
