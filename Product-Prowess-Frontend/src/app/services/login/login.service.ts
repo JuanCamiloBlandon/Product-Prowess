@@ -12,6 +12,12 @@ export class LoginService {
   constructor(private http: HttpClient) { }
 
   login(email: string, password: string): Observable<any>{
+    console.log('Sending login request to:', this.apiUrl);
     return this.http.post<any>(this.apiUrl, {email, password});
   }
+
+  logout(): void {
+    localStorage.removeItem('token');
+  }
+
 }

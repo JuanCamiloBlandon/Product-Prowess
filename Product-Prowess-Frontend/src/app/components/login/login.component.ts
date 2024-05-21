@@ -1,29 +1,27 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { LoginService } from '../../login/login.service';
-
+import { LoginService } from '../../services/login/login.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-
 export class LoginComponent {
   @Input() showLogin: boolean = false;
   @Output() showLoginModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  email = '';
-  password = '';
+  email: string = '';
+  password: string = '';
 
   constructor(
     private loginService: LoginService,
     private messageService: MessageService,
     private router: Router
-  ) { };
+  ) { }
 
-  closeLoginMdal(): void {
+  closeLoginModal(): void {
     this.showLogin = false;
     this.showLoginModal.emit(this.showLogin);
   }
@@ -33,16 +31,15 @@ export class LoginComponent {
       (response) => {
         if (response.ok) {
           localStorage.setItem('token', response.token);
-          this.showSuccessMessage('Iniciando');
+          this.showSuccessMessage('Iniciando sesión...');
           this.router.navigate(['/dashboard']);
         } else {
-          this.showErrorMessage('Error al registrar el usuario');
+          this.showErrorMessage('Error al iniciar sesión');
         }
       },
-       (error) => {
-        console.error('Error Logueando usuario', error);
-
-        this.showErrorMessage('Error al registrar el usuario');
+      (error) => {
+        console.error('Error iniciando sesión', error);
+        this.showErrorMessage('Error al iniciar sesión');
       }
     );
   }
@@ -55,4 +52,7 @@ export class LoginComponent {
     this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
   }
 
+  get isValidLogin(): boolean {
+    return this.email.trim() !== '' && this.password.trim() !== '';
+  }
 }

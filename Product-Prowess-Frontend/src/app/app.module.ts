@@ -4,7 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from "@angular/common/http";
-import { RegisterService } from "./services/register.service";
+import { RegisterService } from "./services/register/register.service";
 
 
 import { ButtonModule} from 'primeng/button';
@@ -14,6 +14,8 @@ import { AvatarGroupModule} from 'primeng/avatargroup';
 import { MessageService } from "primeng/api";
 import { PanelModule } from 'primeng/panel';
 import { CardModule } from 'primeng/card';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { CarouselModule } from 'primeng/carousel';
 
 
 import {routes} from "./app.routes";
@@ -49,6 +51,8 @@ import { AvatarsComponent } from "./components/avatars/avatars.component";
         AvatarGroupModule,
         PanelModule,
         CardModule,
+        InputTextareaModule,
+        CarouselModule,
         RouterModule.forRoot(routes),
         
     ],

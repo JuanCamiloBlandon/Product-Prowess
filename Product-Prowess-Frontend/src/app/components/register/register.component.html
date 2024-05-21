@@ -36,10 +36,9 @@
                             </div>
                             <div class="mb-3">
                                 <label>Biografía</label>
-                                <input type="text" name="bio" class="form-control" placeholder="Ingrese su biografía"
-                                    [(ngModel)]="bio">
+                                <textarea  pInputTextarea [autoResize]="true" name="bio" class="form-control custom-textarea" placeholder="Ingresa tu biografía" [(ngModel)]="bio"></textarea>
                             </div>
-                            <button type="submit" pButton pRipple>Registrarse</button>
+                            <button type="submit" pButton pRipple [disabled]="!isFormValid">Registrarse</button>
                         </form>
                     </div>
                 </div>
