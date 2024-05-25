@@ -1,10 +1,18 @@
-<nav class="navbar navbar-dark bg-dark">
-  <div class="container">
+<nav id="navbar" class="navbar navbar-dark bg-dark">
+  <div class="container d-flex align-items-center justify-content-between">
     <button class="navbar-toggler position-relative" type="button" data-bs-toggle="collapse"
       data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
       aria-label="Toggle navigation" (click)="toggleMenu()">
       <span class="navbar-toggler-icon"></span>
     </button>
+    <form class="search-form">
+      <input type="text" class="search-input" placeholder="Buscar...">
+    </form>
+    <div class="welcome-text">
+      <span class="welcome">Bienvenido de nuevo!</span><br>
+      <span>&nbsp;{{ userName }}</span>
+    </div>
+    <button class="btn btn-create-product" (click)="openProductModal()">Crear Producto </button>
   </div>
 </nav>
 
@@ -17,7 +25,7 @@
             shape="circle">
           </p-avatar>
           <ng-template #defaultAvatar>
-            <p-avatar icon="pi pi-user" styleClass="mr-2" size="xlarge" shape="circle"></p-avatar>
+            <p-avatar icon="pi pi-user" styleClass="mr-2 user-name" size="xlarge" shape="circle"></p-avatar>
           </ng-template>
           <div *ngIf="userName" class="mt-2" style="clear: both;">{{ userName }}</div>
         </div>
@@ -26,15 +34,36 @@
         <button class="logout-button" (click)="logout()">
           <i class="pi pi-sign-out"></i>
         </button>
+        <label class="">Cerrar Sesión</label>
+      </div>
+    </div>
+
+    <div class="col-10">
+      <div class="centered-box-container">
+        <div class="centered-box bg-light p-3 rounded">
+          <p-carousel [value]="products" [numVisible]="3" [numScroll]="3" [circular]="true"
+                      [responsiveOptions]="responsiveOptions" autoplayInterval="3000">
+            <ng-template pTemplate="header">
+              <h3>Productos del Usuario</h3>
+            </ng-template>
+            <ng-template let-product pTemplate="item">
+              <div class="p-grid">
+                <div class="p-col-12">
+                  <div class="card">
+                    <img [src]="'assets/imageproducts/' + product.image"  class="card-img-top" alt="{{ product.productName }}" (error)="handleImageError($event)">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ product.productName }}</h5>
+                      <p class="card-text">{{ product.description }}</p>
+                      <div class="tags">{{ product.tags.join(', ') }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </p-carousel>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-<div class="centered-box-container">
-  <div class="centered-box bg-light p-3 rounded">
-    <p-carousel [circular]="true" [numVisible]="3" [numScroll]="3" autoplayInterval="3000">
-    </p-carousel>
-  </div>
-</div>
-
+<app-technologies *ngIf="showTechnologyModal" (closeModal)="closeTechnologyModal()"></app-technologies>

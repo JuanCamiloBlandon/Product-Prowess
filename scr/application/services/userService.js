@@ -55,7 +55,11 @@ class UserService {
                 throw new Error('Wrong Credentials');
             }
 
-            return user
+            return {
+                _id: user._id,
+                email: user.email,
+                password: user.password
+            }
 
         } catch (error) {
             throw new Error(error);

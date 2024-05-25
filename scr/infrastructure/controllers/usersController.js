@@ -112,7 +112,8 @@ const loginUser = async (req, res = response) => {
           ok: true,
           message: "You are logged in",
           token,
-          duration: "1 hour"
+          duration: "1 hour",
+          userId: user._id
       });
 
   } catch (error) {
@@ -143,9 +144,41 @@ const loginUser = async (req, res = response) => {
   }
 };
 
+const getUserDetails = async (req, res = response) => {
+  const userId = req.params.id;
+  console.log('ID de usuario recibido en el backend:', userId);
+  try {
+    const user = await usersModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        ok: false,
+        error: {
+          message: 'User not found'
+        }
+      });
+    }
+    res.status(200).json({
+      ok: true,
+      user:{
+        _id: user._id,
+        username: user.username,
+        avatar: user.avatar,
+      }
+    });
+  } catch (error) {
+    console.error('Error obteniendo detalles del usuario', error);
+    res.status(500).json({
+      ok: false,
+      error: {
+        message: 'Error obteniendo detalles del usuario'
+      }
+    });
+  }
+};
 
 module.exports = {
   createUser,
   loginUser,
-  updateUser
+  updateUser,
+  getUserDetails
 };

@@ -11,7 +11,8 @@ export class RegisterService {
 
   constructor( private http: HttpClient) { }
 
-  registerUser(userData: any):Observable<any>{
+  register(username: string, email: string, password: string, bio: string, avatar: string): Observable<any> {
+    const userData = { username, email, password, bio, avatar };
     return this.http.post<any>(this.apiUrl, userData);
   }
 }

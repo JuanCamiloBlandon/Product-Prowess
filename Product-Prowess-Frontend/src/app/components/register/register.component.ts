@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { RegisterService } from '../../services/register/register.service';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-register',
@@ -21,22 +23,14 @@ export class RegisterComponent {
   constructor(
     private messageService: MessageService,
     private registerService: RegisterService,
-  ) { };
+    private userService: UserService,
+    private router: Router
+  ) { }
 
   registerUser(): void {
-    const formData = {
-      username: this.username,
-      email: this.email,
-      password: this.password,
-      bio: this.bio,
-      avatar: this.avatar
-    };
-    
-    this.registerService.registerUser(formData).subscribe(
+    this.registerService.register(this.username, this.email, this.password, this.bio, this.avatar).subscribe(
       (response) => {
         if (response.ok) {
-          localStorage.setItem('userName', this.username);
-          localStorage.setItem('userAvatar', this.avatar);
           this.showSuccessMessage('Usuario registrado correctamente');
           window.location.href = '/';
         } else {
@@ -48,6 +42,7 @@ export class RegisterComponent {
       }
     );
   }
+  
 
   public showSuccessMessage(message: string): void {
     this.messageService.add({ severity: 'success', detail: message });
@@ -67,9 +62,11 @@ export class RegisterComponent {
   }
 
   get isFormValid(): boolean {
-    return this.username.trim() !== '' && 
-           this.email.trim() !== '' && 
-           this.password.trim() !== '' && 
-           this.bio.trim() !== '';
+    return (
+      this.username.trim() !== '' &&
+      this.email.trim() !== '' &&
+      this.password.trim() !== '' &&
+      this.bio.trim() !== ''
+    );
   }
 }

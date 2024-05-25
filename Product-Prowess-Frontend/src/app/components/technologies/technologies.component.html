@@ -1,0 +1,44 @@
+<div class="modal-overlay"></div>
+<div class="modal-container">
+  <div class="modal-content">
+    <div class="modal-header text">
+      <h5 class="modal-title ">Crear Productos</h5>
+    </div>
+    <div class="modal-body">
+      <div class="d-flex align-items-center mb-3">
+        <div class="avatar-container mr-2">
+          <p-avatar *ngIf="!newProduct.image" icon="pi pi-user" styleClass="mr-2" size="xlarge"></p-avatar>
+          <p-avatar  styleClass="mr-2"  [image]="newProduct.image" size="xlarge"></p-avatar>
+          <i class="pi pi-user-edit user-icon" (click)="toggleImageSelector()"></i>
+        </div>
+        <div>
+          <input type="text" class="form-control wide-input " id="productName" [(ngModel)]="newProduct.productName" name="productName" placeholder="Nombre del Producto" required>
+        </div>
+      </div>
+      <div *ngIf="showImageSelector" class="mb-3">
+        <app-imageselector (imageSelected)="onImageSelected($event)"></app-imageselector>
+      </div>
+      <div class="mb-3">
+        <input type="text" class="form-control short-input" id="category" [(ngModel)]="newProduct.category" name="category" placeholder="Categoría">
+      </div>
+      <div class="mb-3">
+        <input type="text" class="form-control short-input" id="tags" [(ngModel)]="newProduct.tags" name="tags" placeholder="Tags">
+      </div>
+      <div class="mb-3" style="display: none;" >
+        <input type="text" class="form-control short-input" id="url" [(ngModel)]="newProduct.url" name="url" placeholder="URL" >
+      </div>
+      <div class="mb-3">
+        <textarea class="form-control text-description" id="description" [(ngModel)]="newProduct.description" name="description" placeholder="Descripción" required></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary btn-cancel" (click)="cancelAction()">Cancelar</button>
+      <button type="button" class="btn btn-primary btn-create" (click)="createProduct()" [disabled]="!isValidForm()">Crear
+        <p-progressSpinner *ngIf="isLoading" ariaLabel="loading" class="custom-spinner"
+        [strokeWidth]="'2'" [fill]="'#EEEEEE'" [animationDuration]="'0.7'">{{ isLoadingMessage }}></p-progressSpinner>
+      </button>
+    </div>
+  </div>
+</div>
+<p-toast position="bottom-right"></p-toast>
+

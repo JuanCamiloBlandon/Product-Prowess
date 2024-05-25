@@ -39,6 +39,16 @@ const ProdutsSchema = Schema({
     updatedAt: {
         type: Date,
         require: true
+    },
+
+    category: {
+        type: String,
+        require: true
+    },
+
+    image: {
+        type: String,
+        require: true
     }
 
 });

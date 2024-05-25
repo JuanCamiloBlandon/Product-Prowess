@@ -1,0 +1,5 @@
+<div class="image-selector">
+    <div class="card" *ngFor="let image of imagesPrduct" (click)="selectImage(image)">
+        <img [src]="image" alt="Imagen" style="cursor: pointer;">
+    </div>
+</div>

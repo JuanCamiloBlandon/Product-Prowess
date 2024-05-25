@@ -29,10 +29,10 @@ export class LoginComponent {
   onSubmit(): void {
     this.loginService.login(this.email, this.password).subscribe(
       (response) => {
-        if (response.ok) {
+        if (response.token) {
           localStorage.setItem('token', response.token);
           this.showSuccessMessage('Iniciando sesión...');
-          this.router.navigate(['/dashboard']);
+          window.location.href = '/dashboard';
         } else {
           this.showErrorMessage('Error al iniciar sesión');
         }
@@ -53,6 +53,7 @@ export class LoginComponent {
   }
 
   get isValidLogin(): boolean {
-    return this.email.trim() !== '' && this.password.trim() !== '';
+    return this.email.trim() !== '' && 
+    this.password.trim() !== '';
   }
 }

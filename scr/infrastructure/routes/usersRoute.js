@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = Router();
 
-const { createUser, loginUser, updateUser } = require('../controllers/usersController');
+const { createUser, loginUser, updateUser , getUserDetails} = require('../controllers/usersController');
 const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validateFields');
 
@@ -195,5 +195,9 @@ router.put(
   updateUser
 );
 
+router.get(
+  '/users/:id',
+  getUserDetails
+);
 
 module.exports = router;

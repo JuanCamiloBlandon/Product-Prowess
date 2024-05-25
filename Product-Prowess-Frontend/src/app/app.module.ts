@@ -16,6 +16,9 @@ import { PanelModule } from 'primeng/panel';
 import { CardModule } from 'primeng/card';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CarouselModule } from 'primeng/carousel';
+import { TreeSelectModule } from 'primeng/treeselect';
+import { DialogModule} from 'primeng/dialog';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 import {routes} from "./app.routes";
@@ -27,6 +30,9 @@ import { RegisterComponent } from "./components/register/register.component";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { SearchModalComponent } from "./components/search-modal/search-modal.component";
 import { AvatarsComponent } from "./components/avatars/avatars.component";
+import { TechnologiesComponent } from "./components/technologies/technologies.component";
+import { ImageselectorComponent } from "./components/imageselector/imageselector.component";
+
 
 
 @NgModule({
@@ -37,7 +43,9 @@ import { AvatarsComponent } from "./components/avatars/avatars.component";
         RegisterComponent,
         DashboardComponent,
         SearchModalComponent,
-        AvatarsComponent
+        AvatarsComponent,
+        TechnologiesComponent,
+        ImageselectorComponent,
     ],
 
     imports: [
@@ -53,6 +61,9 @@ import { AvatarsComponent } from "./components/avatars/avatars.component";
         CardModule,
         InputTextareaModule,
         CarouselModule,
+        TreeSelectModule,
+        DialogModule,
+        ProgressSpinnerModule,
         RouterModule.forRoot(routes),
         
     ],

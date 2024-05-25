@@ -5,14 +5,14 @@ const Product = require('../../domain/entities/produc');
 class ProductsService {
     async createProduct(productData, userId) {
         try {
-            const { productName, description, url, tags } = productData;
+            const { productName, description, url, tags, category, image } = productData;
             const existingProduct = await productsModel.findOne({ productName, userId });
 
             if (existingProduct) {
                 throw new Error('Product already exists');
             }
 
-            const product = new Product(productName, description, url, tags, userId);
+            const product = new Product(productName, description, url, tags, userId, category, image);
             const newProduct = await productsModel.create(product);
             await newProduct.save();
             return newProduct;

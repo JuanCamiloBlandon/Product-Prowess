@@ -76,6 +76,8 @@ router.post(
     check('description', 'description is mandatory').not().isEmpty(),
     check('url', 'url is mandatory').not().isEmpty(),
     check('tags', 'tags is mandatory').not().isEmpty(),
+    check('category', 'category is mandatory').not().isEmpty(),
+    check('image').optional(),
     validateFields
   ],
   createProduct
@@ -122,6 +124,7 @@ router.put(
   [
     check('productName', 'productName is mandatory').not().isEmpty(),
     check('description', 'description is mandatory').not().isEmpty(),
+    check('image').optional(),
     validateFields
   ],
   updateProduct

@@ -8,7 +8,7 @@ const { returnCommentsByIdProduct } = require('./commentsController');
 const secret = process.env.SECRET;
 
 const createProduct = async (req, res = response) => {
-    const { productName, description, url, tags } = req.body;
+    const { productName, description, url, tags, category, image } = req.body;
     let token = req.headers.authorization;
 
     if (!token) {
@@ -24,7 +24,7 @@ const createProduct = async (req, res = response) => {
         token = token.split(' ')[1];
         const idUser = await verifyToken(token, secret);
 
-        const productData = { productName, description, url, tags };
+        const productData = { productName, description, url, tags, category, image };
         const newProduct = await productService.createProduct(productData, idUser);
 
         res.status(200).json({
@@ -33,10 +33,11 @@ const createProduct = async (req, res = response) => {
             product: {
                 id: newProduct.id, productName: newProduct.productName, description: newProduct.description, url: newProduct.url,
                 tags: newProduct.tags, userId: newProduct.userId, rateAverage: newProduct.rateAverage, createdAt: newProduct.createdAt, 
-                updatedAt: newProduct.updatedAt
+                updatedAt: newProduct.updatedAt , category: newProduct.category, image: newProduct.image
               }
         });
     } catch (error) {
+        console.error('Error al crear producto:', error.message);
         if (error.message === 'Error: Product already exists') {
             return res.status(404).json({
                 ok: false,
@@ -56,7 +57,8 @@ const createProduct = async (req, res = response) => {
         res.status(500).json({
             ok: false,
             error: {
-                message: 'Something went wrong, please contact the admin'
+                message: 'Something went wrong, please contact the admin',
+                details: error.message
             }
         });
         
@@ -65,7 +67,7 @@ const createProduct = async (req, res = response) => {
 
 const updateProduct = async (req, res = response) => {
     const productId = req.params.id;
-    const { productName, description } = req.body;
+    const { productName, description, image } = req.body;
     let token = req.headers.authorization;
 
     if (!token) {
@@ -82,7 +84,7 @@ const updateProduct = async (req, res = response) => {
 
         const userId = await verifyToken(token, secret);
 
-        const productData = {productName, description};
+        const productData = {productName, description, image};
         const updatedProduct = await productService.updateProduct(productData, productId, userId);
 
         res.status(200).json({
@@ -359,6 +361,8 @@ const getAllProducts = async (req, res = response) => {
         const idUser = await verifyToken(token, secret);
 
         const products = await Products.find({});
+
+        console.log('Productos recuperados de la base de datos:', products);
 
         res.status(200).json({
             ok: true,
