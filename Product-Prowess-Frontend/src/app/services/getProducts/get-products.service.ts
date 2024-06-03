@@ -29,6 +29,10 @@ export class GetProductsService {
         console.error('Error fetching products:', error);
         return throwError(error); 
       })
+    ).pipe(
+      tap(response => {
+        console.log('Response fron server: ', response);
+      })
     );
   }
 }

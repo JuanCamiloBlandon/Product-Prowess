@@ -58,12 +58,9 @@ export class DashboardComponent implements OnInit {
     if (userId) {
       this.userService.getUserDetails(userId).subscribe(
         (userData) => {
-          console.log('Datos del usuario de la bd: ', userData);
           if (userData && userData.user && userData.user.username) {
             this.userName = userData.user.username;
             this.userAvatar = userData.user.avatar;
-            console.log('Nombre de usuario:', this.userName);
-            console.log('Nombre de avatar:', this.userAvatar);
           } else {
             console.error('La estructura de los datos del usuario no es la esperada');
           }
@@ -76,9 +73,8 @@ export class DashboardComponent implements OnInit {
       this.getProductService.getUserProducts().subscribe(
         (response) => {
           if (response && response.msg && Array.isArray(response.msg.products)) {
-            this.products = response.msg.products; 
-            this.products.forEach(product => {
-            });
+            
+            this.products = response.msg.products.filter(product => product.userId === userId); 
           } else {
             console.error('La respuesta del servidor no tiene la estructura esperada:', response);
           }
@@ -92,11 +88,6 @@ export class DashboardComponent implements OnInit {
       console.error('No se encontró el ID de usuario en el localStorage');
     }
   }
-
-  handleImageError(event: Event): void {
-    (event.target as HTMLImageElement).src ='assets/imageproducts/portatil.png';
-  }
-
 
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;

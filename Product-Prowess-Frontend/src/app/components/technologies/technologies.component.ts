@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 export interface Product {
   _id: string;
+  userId: string;
   productName: string;
   description: string;
   tags: string[]; 

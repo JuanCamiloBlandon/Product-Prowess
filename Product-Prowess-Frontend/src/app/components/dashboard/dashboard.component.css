@@ -141,7 +141,7 @@
 .centered-box-container {
     position: absolute;
     top: 420px;
-    left: 550px;
+    left: 599px;
     transform: translate(-50%, -50%);
     z-index: 1050;
     display: flex;
@@ -151,7 +151,7 @@
 }
 
 .centered-box {
-    width: 492px;
+    width: 592px;
     height: 350px;
     background-color: rgb(53, 50, 50) !important;
     box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.15);
@@ -175,13 +175,35 @@
     gap: 20px;
 }
   
+.card {
+    height: 195px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #333;
+    box-shadow: 0 0 0 1px #646060;
+    margin: 8px;
+    
+}
+
+.card img {
+    height: 45%; 
+    width: 100%;
+    object-fit: cover;
+    margin: 15px 0;
+    border-radius: 8px; 
+    padding: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    
+}
+
+
 .card-body {
-    height: 110px; 
-    width: 60px;
-    display: flex; 
-    font-size: 5px;
-    flex-direction:row; 
-    object-fit: cover; 
+    padding: 10px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card-body p{
@@ -194,9 +216,13 @@ h3{
     text-align: center;
 }
 
-.card-title{
-    position: relative;
-    justify-content: center;
-    font-size: 15px;
-    top: 3px;
+h5 {
+    color: azure;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.card-title .card-text{
+    text-align: center;
+    top: 7px;
 }

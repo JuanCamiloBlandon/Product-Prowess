@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { RegisterService } from '../../services/register/register.service';
-import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-register',
@@ -23,8 +22,6 @@ export class RegisterComponent {
   constructor(
     private messageService: MessageService,
     private registerService: RegisterService,
-    private userService: UserService,
-    private router: Router
   ) { }
 
   registerUser(): void {

@@ -44,17 +44,15 @@
           <p-carousel [value]="products" [numVisible]="3" [numScroll]="3" [circular]="true"
                       [responsiveOptions]="responsiveOptions" autoplayInterval="3000">
             <ng-template pTemplate="header">
-              <h3>Productos del Usuario</h3>
+              <h3>Mis productos</h3>
             </ng-template>
             <ng-template let-product pTemplate="item">
               <div class="p-grid">
                 <div class="p-col-12">
                   <div class="card">
-                    <img [src]="'assets/imageproducts/' + product.image"  class="card-img-top" alt="{{ product.productName }}" (error)="handleImageError($event)">
+                    <img [src]="product.image"  class="card-img-top" alt="{{ product.productName }}" >
                     <div class="card-body">
                       <h5 class="card-title">{{ product.productName }}</h5>
-                      <p class="card-text">{{ product.description }}</p>
-                      <div class="tags">{{ product.tags.join(', ') }}</div>
                     </div>
                   </div>
                 </div>

@@ -19,10 +19,8 @@ export class LoginService {
   ) { }
 
   login(email: string, password: string): Observable<any>{
-    console.log('Sending login request to:', this.apiUrl);
     return this.http.post<any>(this.apiUrl, { email, password }).pipe(
       tap(response => {
-        console.log('Response from login API:', response);
         if (response.token) {
           localStorage.setItem('token', response.token);
           this.router.navigate(['/dashboard']);

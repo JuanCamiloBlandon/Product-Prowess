@@ -49,7 +49,7 @@ export class LoginComponent {
   }
 
   private showErrorMessage(message: string): void {
-    this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
+    this.messageService.add({ severity: 'error', detail: message });
   }
 
   get isValidLogin(): boolean {
