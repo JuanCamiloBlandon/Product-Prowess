@@ -8,7 +8,7 @@ export interface Product {
   userId: string;
   productName: string;
   description: string;
-  tags: string[]; 
+  tags: string[];
   image: string;
   url: string;
 }
@@ -17,9 +17,8 @@ export interface Product {
   selector: 'app-technologies',
   templateUrl: './technologies.component.html',
   styleUrls: ['./technologies.component.css']
-  
-})
 
+})
 
 export class TechnologiesComponent implements OnInit {
   newProduct: any = {
@@ -51,27 +50,25 @@ export class TechnologiesComponent implements OnInit {
     }
 
     this.isLoading = true;
-
     this.newProduct.url = 'https://www.amazon.com/-/es/';
-
-    setTimeout(() => {
-      this.isLoading = false;
-      this.isLoadingMessage = '';
-      this.showSuccessMessage('Producto creado exitosamente');
-      this.clearForm();
-    }, 5000);
-
-    this.isLoadingMessage = 'Creando...';
 
     this.productService.createProduct(this.newProduct).subscribe(response => {
       console.log('Producto creado', response);
-      console.log('datos del producto creado: ', this.newProduct);
-
+      setTimeout(() => {
+        this.isLoading = false;
+        this.isLoadingMessage = '';
+        this.showSuccessMessage('Producto creado exitosamente');
+        this.clearForm();
+      }, 5000); 
     }, error => {
       console.error('Error al crear el producto', error);
-      this.isLoadingMessage = '';
       this.isLoading = false;
-      this.showErrorMessage('Error al crear el producto');
+      this.isLoadingMessage = '';
+      if (error.status === 409) {
+        this.showExistProduct('El producto ya existe');
+      } else {
+        this.showErrorMessage('Error al crear el producto');
+      }
     });
   }
 
@@ -81,6 +78,10 @@ export class TechnologiesComponent implements OnInit {
 
   private showErrorMessage(message: string): void {
     this.messageService.add({ severity: 'error', detail: message });
+  }
+
+  private showExistProduct(message: string): void {
+    this.messageService.add({ severity: 'info', detail: message });
   }
 
   toggleImageSelector(): void {
@@ -107,11 +108,10 @@ export class TechnologiesComponent implements OnInit {
       description: '',
       url: '',
       tags: '',
-      category: ''
+      category: '',
+      image: ''
     };
   }
-
-
 
   isValidForm(): boolean {
     return this.newProduct.productName && this.newProduct.description;

@@ -99,7 +99,6 @@ export class DashboardComponent implements OnInit {
   }
 
   openProductModal(): void {
-    console.log('Llamando el modal de creación de producto de tecnología');
     this.showTechnologyModal = true;
   }
 
