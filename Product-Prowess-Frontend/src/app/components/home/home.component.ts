@@ -26,6 +26,10 @@ export class HomeComponent {
 
   constructor(private router: Router){}
 
+  closeLoginModal(): void {
+    this.showLoginModal = false; // Oculta el modal de inicio de sesión
+  }
+
   toggleSearchModal(): void {
     this.showSearchModal = !this.showSearchModal;
   }

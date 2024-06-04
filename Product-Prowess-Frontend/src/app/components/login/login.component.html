@@ -1,29 +1,25 @@
-<div class="container" *ngIf="showLogin">
-    <div class="modal-overlay" >
-        <div class="modal-content">
-            <div class="row justify-content-end">
-                <div class="col-md-6">
-                    <div class="form-Logincontainer">
-                        <div class="form-header">
-                            <h2 class="form-title">Inicio de sesión</h2>
-                        </div>
-                        <form (ngSubmit)="onSubmit()">
-                            <div class="mb-3">
-                                <label >Correo</label>
-                                <input type="email" name="email" class="form-control" placeholder="correo@micorreo.com" [(ngModel)]="email">
-                            </div>
-                            <div class="mb-3">
-                                <label >Contraseña</label>
-                                <input type="password" name="password" class="form-control"
-                                    placeholder="Ingrese su contraseña"[(ngModel)]="password">
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary" [disabled]="!isValidLogin">Ingresar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="modal-overlay"></div>
+<div class="modal-container">
+  <div class="circle-icon">
+    <i class="pi pi-times" (click)="closeLoginModal()"></i>
+</div>
+  <div class="modal-content">
+    <div class="modal-header text">
+      <h5 class="modal-title ">Inicio de Sesión</h5>
     </div>
+    <div class="modal-body">
+      <form (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <input type="email" class="form-control wide-input" id="email" name="email" placeholder="Correo" [(ngModel)]="email" required>
+        </div>
+        <div class="mb-3">
+          <input type="password" class="form-control wide-input" id="password" name="password" placeholder="Contraseña" [(ngModel)]="password" required>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary btn-create" (click)="onSubmit()" [disabled]="!isValidLogin">Ingresar</button>
+    </div>
+  </div>
 </div>
 <p-toast position="bottom-right"></p-toast>

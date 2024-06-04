@@ -1,7 +1,7 @@
 <nav class="navbar">
-    <div class="container-fluid">
+    <div class="container-fluid ">
         <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+            <input class="form-control me-2"  type="search" placeholder="Search" aria-label="Search"
                 (click)="toggleSearchModal()">
         </form>
         <div class="navbar-content">
@@ -21,8 +21,8 @@
     <div class="imageHome">
         <img src="assets/image/homepage.png" alt="homepage">
     </div>
-    <div *ngIf="showLoginModal">
-        <app-login [showLogin]="showLoginModal" (showLoginModal)="showLoginModal = $event"></app-login>
+    <div class="blur-background" *ngIf="showLoginModal">
+        <app-login [showLogin]="showLoginModal" (close)="closeLoginModal()"></app-login>
     </div>
     <div *ngIf="showRegisterModal">
         <app-register [showModal]="showRegisterModal" (showModalChange)="showRegisterModal = $event"></app-register>

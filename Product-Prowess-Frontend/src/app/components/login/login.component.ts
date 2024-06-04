@@ -11,6 +11,7 @@ import { LoginService } from '../../services/login/login.service';
 export class LoginComponent {
   @Input() showLogin: boolean = false;
   @Output() showLoginModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() close: EventEmitter<void> = new EventEmitter<void>();
 
   email: string = '';
   password: string = '';
@@ -22,8 +23,7 @@ export class LoginComponent {
   ) { }
 
   closeLoginModal(): void {
-    this.showLogin = false;
-    this.showLoginModal.emit(this.showLogin);
+    this.close.emit();
   }
 
   onSubmit(): void {

@@ -1,7 +1,27 @@
+@import "primeicons/primeicons.css";
 @import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
 
-.container{
+.modal-title {
     position: absolute;
+    margin-top: 20px;
+    right: 19%;
+    font-family: 'Kanit', sans-serif;
+    display: flex;
+    z-index: 1001;
+}
+
+.modal-container {
+    position: fixed;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    background-color: rgba(252, 250, 250, 0.9); 
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1050; 
+    width: 291px;
+    height: 300px;
+    box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.15);
 }
 
 .modal-overlay {
@@ -10,73 +30,83 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000; 
 }
 
-.modal-content  {
-    position: fixed;
-    top: 25%;
-    left: 60%;
-    width: 550px;
-    height: 250px;
-    transform: translate(-50%, -50%);
-    padding: 20px;
+
+
+.wide-input {
+    width: 100%;
+    height: 35px; 
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
     border-radius: 5px;
+    font-family: 'Kanit', sans-serif;
+    font-size: 14px;
 }
 
-.form-Logincontainer{
-    margin: 0 auto;
-    width: 340px;
-    border: 2px solid #c200ff;
-    border-radius: 10px;
+.wide-input::placeholder {
+    font-size: 12px;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.btn-create {
+    width: 48%;
+    padding: 10px;
+    font-family: 'Kanit', sans-serif;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-create {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-create:hover {
+    background-color: #388E3C;
+}
+
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.wide-input, .btn-create {
+    margin-top: 45px;
+}
+
+.circle-icon {
+    position: absolute;
+    top: -30px;
+    left: -85px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     background-color: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    font-family: 'Kanit', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 2;
 }
 
-.form-Logincontainer .form-header h2 {
-    font-size: 24px;
-    margin: 0 0 15px;
-    text-align: center;
-}
-
-.form-Logincontainer .form-control {
-    width: 250px;
-    height: 35px;
-    border: 2px solid #c200ff;
-    border-radius: 5px;
-    transition: border 0.3s ease;
-    box-shadow: none;
-    margin-bottom: 15px;
-    margin-left: 30px;
-}
-
-.form-Logincontainer label {
-    margin-left: 30px;
-}
-
-.form-Logincontainer button {
-    width: 259px;
-    height: 35px;
-    border-color: #c200ff;
-    background-color: transparent;
+.circle-icon i{
+    font-size: 15px;
     color: #c200ff;
-    border-radius: 5px;
-    margin-top: 20px;
-    margin-left: 30px;
-    font-family: 'Kanit', sans-serif;
+    font-weight: bold;
 }
-
-.form-Logincontainer button:hover {
-    background-color: #c200ff;
-    color: #fff;
-    border-color: #c200ff;
-}
-
-
-
-
-
-
