@@ -11,6 +11,7 @@ import { RegisterService } from '../../services/register/register.service';
 export class RegisterComponent {
   @Input() showModal: boolean = false;
   @Output() showModalChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() close: EventEmitter<void> = new EventEmitter<void>();
 
   username: string = '';
   email: string = '';
@@ -23,6 +24,10 @@ export class RegisterComponent {
     private messageService: MessageService,
     private registerService: RegisterService,
   ) { }
+
+  closeRegisterModal(): void {
+    this.close.emit();
+  }
 
   registerUser(): void {
     this.registerService.register(this.username, this.email, this.password, this.bio, this.avatar).subscribe(

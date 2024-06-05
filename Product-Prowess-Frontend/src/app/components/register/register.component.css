@@ -1,7 +1,13 @@
+@import "primeicons/primeicons.css";
+@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
 
-.container{
-    position: relative;
-    z-index: 1;
+.modal-title {
+    position: absolute;
+    top: -25px;
+    right: 35%;
+    font-family: 'Kanit', sans-serif;
+    display: flex;
+    z-index: 1001;
 }
 
 .modal-overlay {
@@ -10,89 +16,106 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000; 
 }
 
-.modal-content  {
+.modal-container {
     position: fixed;
-    top: 25%;
-    left: 60%;
-    width: 550px;
-    height: 250px;
+    top: 50%; 
+    left: 50%; 
     transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.9); 
     padding: 20px;
-    border-radius: 5px;
-    z-index: 10000;
-}
-
-
-.form-Registercontainer {
-    margin: 0 auto;
-    width: 340px;
-    border: 2px solid #c200ff;
     border-radius: 10px;
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    font-family: 'Kanit', sans-serif;
+    z-index: 1050; 
+    width: 600px; 
+    box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.15);
 }
 
-.form-Registercontainer .form-header h2 {
-    font-size: 24px;
-    margin: 0 0 15px;
-    text-align: center;
-}
-
-.form-Registercontainer .form-control {
-    width: 250px;
-    height: 35px;
-    border: 2px solid #c200ff;
+.short-input, .wide-input, .text-description {
+    width: 100%;
+    height: 35px; 
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    transition: border 0.3s ease;
-    box-shadow: none;
-    margin-bottom: 15px;
-    margin-left: 30px;
-}
-
-.form-Registercontainer label {
-    margin-left: 30px;
-}
-
-.form-Registercontainer button {
-    width: 259px;
-    height: 35px;
-    border-color: #c200ff;
-    background-color: transparent;
-    color: #c200ff;
-    border-radius: 5px;
-    margin-top: 20px;
-    margin-left: 30px;
     font-family: 'Kanit', sans-serif;
+    font-size: 14px;
 }
 
-.form-Registercontainer button:hover {
-    background-color: #c200ff;
-    color: #fff;
-    border-color: #c200ff;
+.short-input::placeholder, .wide-input::placeholder, .text-description::placeholder {
+    font-size: 12px;
 }
 
-p-toast {
-    z-index: 10001;
+.text-description {
+    height: 80px;
+    resize: none;
+}
+
+.btn-create {
+    width: 100%;
+    padding: 10px;
+    font-family: 'Kanit', sans-serif;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.btn-create:hover {
+    background-color: #388E3C;
 }
 
 .user-icon {
     position: absolute;
-    bottom: 94px;
-    right: 49px;
-    border-radius: 50%;
-    padding: 5px;
-    font-size: 24px;
+    top: 40px;
+    left: 50px;
+    font-size: 25px;
+    z-index: 1005;
     cursor: pointer;
+}
+
+.avatar-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.avatar-container p-avatar {
+    margin-right: 20px;
 }
 
 .custom-textarea {
     width: 100%; 
     height: 80px; 
     resize: vertical; 
+}
+
+p-toast {
+    z-index: 10001;
+}
+
+
+.circle-icon {
+    position: absolute;
+    top: -30px;
+    left: -85px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.circle-icon i{
+    font-size: 15px;
+    color: #c200ff;
+    font-weight: bold;
 }
