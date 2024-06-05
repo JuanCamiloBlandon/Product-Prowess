@@ -24,8 +24,8 @@
     <div class="blur-background" *ngIf="showLoginModal">
         <app-login [showLogin]="showLoginModal" (close)="closeLoginModal()"></app-login>
     </div>
-    <div *ngIf="showRegisterModal">
-        <app-register [showModal]="showRegisterModal" (showModalChange)="showRegisterModal = $event"></app-register>
+    <div class="blur-background" *ngIf="showRegisterModal">
+        <app-register [showModal]="showRegisterModal" (close)="closeRegisterModal()" ></app-register>
     </div>
     <div *ngIf="showSearchModal" class="search-modal">
     </div>
