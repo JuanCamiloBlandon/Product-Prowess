@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ProductsService } from '../../services/products/products.service';
 import { MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
 
 export interface Product {
   _id: string;
@@ -32,14 +31,12 @@ export class TechnologiesComponent implements OnInit {
 
   showImageSelector: boolean = false;
   isLoading: boolean = false;
-  isLoadingMessage: string = 'Creando...';
 
   @Output() modalClosed = new EventEmitter<void>();
 
   constructor(
     private productService: ProductsService,
     private messageService: MessageService,
-    private router: Router
   ) { }
 
   ngOnInit(): void { }
@@ -56,14 +53,12 @@ export class TechnologiesComponent implements OnInit {
       console.log('Producto creado', response);
       setTimeout(() => {
         this.isLoading = false;
-        this.isLoadingMessage = '';
         this.showSuccessMessage('Producto creado exitosamente');
         this.clearForm();
       }, 5000); 
     }, error => {
       console.error('Error al crear el producto', error);
       this.isLoading = false;
-      this.isLoadingMessage = '';
       if (error.status === 409) {
         this.showExistProduct('El producto ya existe');
       } else {

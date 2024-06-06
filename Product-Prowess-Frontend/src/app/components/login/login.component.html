@@ -21,7 +21,9 @@
     </div>
     <div class="modal-footer">
       <button type="submit" class="btn btn-primary btn-create" (click)="onSubmit()"
-        [disabled]="!isValidLogin">Ingresar</button>
+        [disabled]="!isValidLogin">Ingresar
+      </button>
+      <p-progressSpinner *ngIf="showSpinner" [fill]="'#EEEEEE'" [animationDuration]="'0.7'" strokeWidth="3" styleClass="custom-spinner"></p-progressSpinner>
     </div>
   </div>
 </div>

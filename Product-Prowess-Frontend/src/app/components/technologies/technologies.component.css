@@ -111,8 +111,16 @@
     flex-grow: 1;
 }
 
-.custom-spinner{
-   margin-left: 10px;
-   width: 200px;
-   height: 100px;
+.custom-spinner {
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+  }
+  
+.custom-spinner .p-progress-spinner {
+    border: none; 
+    background: transparent; 
+    box-shadow: none; 
 }

@@ -34,9 +34,9 @@
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary btn-cancel" (click)="cancelAction()">Cancelar</button>
       <button type="button" class="btn btn-primary btn-create" (click)="createProduct()" [disabled]="!isValidForm()">Crear
-        <p-progressSpinner *ngIf="isLoading" ariaLabel="loading" class="custom-spinner"
-        [strokeWidth]="'2'" [fill]="'#EEEEEE'" [animationDuration]="'0.7'">{{ isLoadingMessage }}></p-progressSpinner>
       </button>
+      <p-progressSpinner *ngIf="isLoading" class="custom-spinner"
+        [strokeWidth]="'2'" [fill]="'#EEEEEE'" [animationDuration]="'0.7'"></p-progressSpinner>
     </div>
   </div>
 </div>

@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { LoginService } from '../../services/login/login.service';
 
@@ -16,10 +15,11 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
+  showSpinner: boolean = false;
+
   constructor(
     private loginService: LoginService,
     private messageService: MessageService,
-    private router: Router
   ) { }
 
   closeLoginModal(): void {
@@ -27,22 +27,34 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
+
+    this.showSpinner = true; 
+
     this.loginService.login(this.email, this.password).subscribe(
       (response) => {
+        console.log('Respuesta del servidor:', response);
         if (response.token) {
           localStorage.setItem('token', response.token);
           this.showSuccessMessage('Iniciando sesión...');
-          window.location.href = '/dashboard';
+
+          setTimeout(() => {
+            this.showSpinner = false;    
+            window.location.href = '/dashboard';
+          }, 7000 );
         } else {
           this.showErrorMessage('Error al iniciar sesión');
+          this.showSpinner = false; 
         }
       },
       (error) => {
         console.error('Error iniciando sesión', error);
         this.showErrorMessage('Error al iniciar sesión');
+        this.showSpinner = false; 
       }
     );
   }
+
+  
 
   public showSuccessMessage(message: string): void {
     this.messageService.add({ severity: 'success', detail: message });
@@ -50,6 +62,10 @@ export class LoginComponent {
 
   private showErrorMessage(message: string): void {
     this.messageService.add({ severity: 'error', detail: message });
+  }
+
+  private showExistUser(message: string): void {
+    this.messageService.add({ severity: 'info', detail: message });
   }
 
   get isValidLogin(): boolean {

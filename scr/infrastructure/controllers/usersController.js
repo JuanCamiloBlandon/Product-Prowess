@@ -24,7 +24,7 @@ const createUser = async (req, res = response) => {
       avatarUrl = avatar;
     }
 
-    const userData = {username, email, password, bio, avatarUrl};
+    const userData = { username, email, password, bio, avatarUrl };
     const newUser = await userService.createUsers(userData);
 
     res.status(200).json({
@@ -52,50 +52,50 @@ const updateUser = async (req, res = response) => {
   let token = req.headers.authorization;
 
   if (!token) {
-      return res.status(401).json({
-          ok: false,
-          error: {
-              message: 'Missing Token'
-          }
-      });
+    return res.status(401).json({
+      ok: false,
+      error: {
+        message: 'Missing Token'
+      }
+    });
   }
 
   try {
-      token = token.split(' ')[1];
+    token = token.split(' ')[1];
 
-      const decodedUserId = await verifyToken(token, secret);
+    const decodedUserId = await verifyToken(token, secret);
 
-      if (userId !== decodedUserId) {
-          return res.status(404).json({
-              ok: false,
-              error: {
-                  message: 'User not found'
-              }
-          });
-      }
-
-      const userData = { username, bio, avatar };
-      const updatedUser = await userService.updateUsers(userId,userData);
-
-      res.status(200).json({
-          ok: true,
-          msg: 'User data updated successfully',
+    if (userId !== decodedUserId) {
+      return res.status(404).json({
+        ok: false,
+        error: {
+          message: 'User not found'
+        }
       });
+    }
+
+    const userData = { username, bio, avatar };
+    const updatedUser = await userService.updateUsers(userId, userData);
+
+    res.status(200).json({
+      ok: true,
+      msg: 'User data updated successfully',
+    });
   } catch (error) {
-      if (error.message === 'Invalid Token') {
-          return res.status(401).json({
-              ok: false,
-              error: {
-                  message: 'Invalid Token'
-              }
-          });
-      }
-      res.status(500).json({
-          ok: false,
-          error: {
-              message: 'Something went wrong, please contact the admin'
-          }
+    if (error.message === 'Invalid Token') {
+      return res.status(401).json({
+        ok: false,
+        error: {
+          message: 'Invalid Token'
+        }
       });
+    }
+    res.status(500).json({
+      ok: false,
+      error: {
+        message: 'Something went wrong, please contact the admin'
+      }
+    });
   }
 };
 
@@ -104,49 +104,54 @@ const loginUser = async (req, res = response) => {
   const { email, password } = req.body;
 
   try {
-      const user = await userService.loginUsers(email, password);
+    // Verificar si el usuario existe
+    const user = await usersModel.findOne({ email });
 
-      const token = generateToken(user._id);
-
-      res.status(200).json({
-          ok: true,
-          message: "You are logged in",
-          token,
-          duration: "1 hour",
-          userId: user._id
+    if (!user) {
+      return res.status(404).json({
+        ok: false,
+        error: {
+          message: 'User not found. Please check your email or register an account.'
+        }
       });
+    }
+
+    // Intentar iniciar sesión
+    const loggedInUser = await userService.loginUsers(email, password);
+
+    if (!loggedInUser) {
+      return res.status(401).json({
+        ok: false,
+        error: {
+          message: 'Incorrect password. Please check your password.'
+        }
+      });
+    }
+
+    const token = generateToken(loggedInUser._id);
+
+    res.status(200).json({
+      ok: true,
+      message: "You are logged in",
+      token,
+      duration: "1 hour",
+      userId: loggedInUser._id
+    });
 
   } catch (error) {
-      if (error.message === 'Error: You are not registered') {
-          return res.status(404).json({
-              ok: false,
-              error: {
-                  message: 'You are not registered'
-              }
-          });
+    console.error('Error al iniciar sesión:', error);
+    res.status(500).json({
+      ok: false,
+      error: {
+        message: 'Something went wrong, please contact the admin'
       }
-
-      if (error.message === 'Error: Wrong Credentials') {
-          return res.status(401).json({
-              ok: false,
-              error: {
-                  message: 'Wrong Credentials'
-              }
-          });
-      }
-
-      res.status(500).json({
-          ok: false,
-          error: {
-              message: 'Something went wrong, please contact the admin'
-          }
-      });
+    });
   }
 };
+;
 
 const getUserDetails = async (req, res = response) => {
   const userId = req.params.id;
-  console.log('ID de usuario recibido en el backend:', userId);
   try {
     const user = await usersModel.findById(userId);
     if (!user) {
@@ -159,7 +164,7 @@ const getUserDetails = async (req, res = response) => {
     }
     res.status(200).json({
       ok: true,
-      user:{
+      user: {
         _id: user._id,
         username: user.username,
         avatar: user.avatar,

@@ -110,3 +110,17 @@
     color: #c200ff;
     font-weight: bold;
 }
+
+.custom-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+  }
+  
+.custom-spinner .p-progress-spinner {
+    border: none; 
+    background: transparent; 
+    box-shadow: none; 
+}
