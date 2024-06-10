@@ -19,7 +19,8 @@ import { CarouselModule } from 'primeng/carousel';
 import { TreeSelectModule } from 'primeng/treeselect';
 import { DialogModule} from 'primeng/dialog';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-
+import { DynamicDialogModule} from 'primeng/dynamicdialog';
+import { DialogService } from 'primeng/dynamicdialog';
 
 import {routes} from "./app.routes";
 
@@ -32,6 +33,8 @@ import { SearchModalComponent } from "./components/search-modal/search-modal.com
 import { AvatarsComponent } from "./components/avatars/avatars.component";
 import { TechnologiesComponent } from "./components/technologies/technologies.component";
 import { ImageselectorComponent } from "./components/imageselector/imageselector.component";
+import { ListProductsComponent } from "./components/list-products/list-products.component";
+import { FooterComponent } from "./components/footer/footer.component";
 
 
 
@@ -46,6 +49,8 @@ import { ImageselectorComponent } from "./components/imageselector/imageselector
         AvatarsComponent,
         TechnologiesComponent,
         ImageselectorComponent,
+        ListProductsComponent,
+        FooterComponent
     ],
 
     imports: [
@@ -64,13 +69,15 @@ import { ImageselectorComponent } from "./components/imageselector/imageselector
         TreeSelectModule,
         DialogModule,
         ProgressSpinnerModule,
+        DynamicDialogModule,
         RouterModule.forRoot(routes),
         
     ],
 
     providers: [
         RegisterService,
-        MessageService
+        MessageService,
+        DialogService,
         
     ],
     bootstrap: [AppComponent]

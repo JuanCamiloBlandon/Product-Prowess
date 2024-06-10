@@ -1,0 +1,22 @@
+<div *ngIf="products && products.length">
+  <div class="row">
+    <div class="col-lg-4 col-md-6 mb-4" *ngFor="let product of products">
+      <div class="card h-100">
+        <div class="image-container">
+          <img class="card-img-top" [src]="product.image" [alt]="product.productName">
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{ product.productName }}</h5>
+        </div>
+        <div class="custom-button">
+          <i class="pi pi-info-circle"></i><span class="button-text">Detalles</span>
+          <span class="ripple"></span>
+        </div>
+        <div class="shopping-cart" (click)="redirectToProductUrl(product.url, $event)">
+          <span class="pi pi-shopping-cart"></span>
+          <span class="ripple"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

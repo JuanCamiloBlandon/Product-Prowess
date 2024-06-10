@@ -2,7 +2,7 @@ const { Router } = require('express');
 const router = Router();
 
 const { createProduct, updateProduct, deleteProduct, searchProductById, searchProductsByTagOrName, 
-        searchRateAverageByProductId,getAllProducts, searchProductsByDate, getProductsWithFilters} = require('../controllers/productsController');
+        searchRateAverageByProductId,getAllProducts, getAllProductsPublic, searchProductsByDate, getProductsWithFilters} = require('../controllers/productsController');
 const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validateFields');
 

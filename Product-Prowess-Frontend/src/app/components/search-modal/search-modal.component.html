@@ -2,9 +2,13 @@
     <div class="circle-icon">
         <i class="pi pi-times" (click)="closeModal()"></i>
     </div>
-    <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-overlay" >
         <div class="modal-content">
-            <h2>Aquí vamos a traer la información para buscar</h2>
+            <h2>Elige una opción de búsqueda</h2>
+            <div class="flex justify-content-center  p-button">
+                <p-toast />
+                <p-button (click)="show()" icon="pi pi-search" label="Selecciona un producto" pRipple />
+            </div>
         </div>
     </div>
 </div>

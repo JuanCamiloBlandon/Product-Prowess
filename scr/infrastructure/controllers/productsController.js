@@ -362,7 +362,6 @@ const getAllProducts = async (req, res = response) => {
 
         const products = await Products.find({});
 
-        console.log('Productos recuperados de la base de datos:', products);
 
         res.status(200).json({
             ok: true,
@@ -381,6 +380,27 @@ const getAllProducts = async (req, res = response) => {
         });
     }
 };
+
+const getAllProductsPublic = async (req, res = response) => {
+    try {
+        const products = await Products.find({});
+        res.status(200).json({
+            ok: true,
+            msg: {
+                products: products
+            }
+        });
+    } catch (error) {
+        console.error('Error en getAllProductsPublic:', error);
+        return res.status(500).json({
+            ok: false,
+            error: {
+                message: error.message
+            }
+        });
+    }
+}
+
 
 const getProductsWithFilters = async (req, res = response) => {
     const { name, tags, minRating, startDate, endDate } = req.body;
@@ -451,5 +471,6 @@ module.exports = {
     searchProductsByTagOrName,
     searchRateAverageByProductId,
     getAllProducts,
+    getAllProductsPublic,
     getProductsWithFilters
 };
