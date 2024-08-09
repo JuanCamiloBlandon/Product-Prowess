@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { RegisterService } from '../../services/register/register.service';
 

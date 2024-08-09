@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+.product-details-container {
+    padding: 1rem;
+    background-color: #333;
+    color: #fff;
+    font-family: 'Kanit', sans-serif;
+}
+  
+.product-details-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+  
+.product-details-table th,
+.product-details-table td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+  
+.id-container {
+    position: relative;
+}
+  
+.id-container input {
+    width: calc(100% - 24px); 
+    background-color: transparent; 
+    color: #fff;
+    border: none; 
+    padding: 0; 
+    pointer-events: none;
+}
+  
+.copy-icon {
+    position: absolute;
+    right: -7px;
+    top: -5px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #fff; 
+}
+
+.start-icon {
+    position: absolute;
+    right: 2px;
+    top: -13px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #fff;
+}
+
+.comments-icon{
+    position: absolute;
+    right: 65px;
+    top: 11px;
+    
+}
+
+.button-text{
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Kanit', sans-serif;
+}
+
+.button-text:hover{
+    background-color: #c82333;
+}
+
+.id-container input:focus {
+    outline: none; 
+}
+
+.ui-toast .ui-toast-message.ui-toast-message-warn {
+    opacity: 0.9;
+}

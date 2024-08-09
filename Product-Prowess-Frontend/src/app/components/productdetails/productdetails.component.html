@@ -1,0 +1,50 @@
+<div class="product-details-container">
+    <table class="product-details-table">
+        <tr>
+            <th>ID</th>
+            <td>
+                <div class="id-container">
+                    <input type="text" [value]="displayId" readonly>
+                    <span class="copy-icon pi pi-copy" (click)="copyToClipboard(product._id)"></span>
+                </div>
+                <p-toast />
+            </td>
+        </tr>
+        <tr>
+            <th>Nombre del Producto</th>
+            <td>{{ product.productName }}</td>
+        </tr>
+        <tr>
+            <th>Descripción</th>
+            <td>{{ product.description }}</td>
+        </tr>
+        <tr>
+            <th>Categoría</th>
+            <td>{{ product.category }}</td>
+        </tr>
+        <tr>
+            <th>Tag</th>
+            <td>{{ product.tags }}</td>
+        </tr>
+        <tr>
+            <th>Calificación</th>
+            <td>{{ product.rateAverage }}
+                <div class="id-container">
+                    <span class="start-icon pi pi-star" (click)="handleStarClick()" ></span>
+                </div>
+                <p-toast />
+            </td>
+        </tr>
+        <tr>
+            <th>Fecha de Creación</th>
+            <td>{{ formattedDate }}</td>
+        </tr>
+        <tr>
+            <td >
+                <div class="id-container">
+                    <span class="button-text" (click)="handleCommentsClick()" >Comentar</span>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

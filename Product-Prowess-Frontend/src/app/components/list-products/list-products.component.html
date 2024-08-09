@@ -8,7 +8,7 @@
         <div class="card-body">
           <h5 class="card-title">{{ product.productName }}</h5>
         </div>
-        <div class="custom-button">
+        <div class="custom-button" (click)="showProductDetails(product, $event)">
           <i class="pi pi-info-circle"></i><span class="button-text">Detalles</span>
           <span class="ripple"></span>
         </div>

@@ -35,6 +35,7 @@ import { TechnologiesComponent } from "./components/technologies/technologies.co
 import { ImageselectorComponent } from "./components/imageselector/imageselector.component";
 import { ListProductsComponent } from "./components/list-products/list-products.component";
 import { FooterComponent } from "./components/footer/footer.component";
+import { ProductdetailsComponent } from "./components/productdetails/productdetails.component";
 
 
 
@@ -50,7 +51,8 @@ import { FooterComponent } from "./components/footer/footer.component";
         TechnologiesComponent,
         ImageselectorComponent,
         ListProductsComponent,
-        FooterComponent
+        FooterComponent,
+        ProductdetailsComponent
     ],
 
     imports: [

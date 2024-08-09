@@ -6,7 +6,6 @@ const secret = process.env.SECRET;
 
 const createUser = async (req, res = response) => {
   const { username, email, password, bio, avatar } = req.body
-  console.log('Datos recibidos:', req.body);
   try {
     let user = await usersModel.findOne({ email });
 
@@ -104,7 +103,7 @@ const loginUser = async (req, res = response) => {
   const { email, password } = req.body;
 
   try {
-    // Verificar si el usuario existe
+    
     const user = await usersModel.findOne({ email });
 
     if (!user) {
@@ -116,7 +115,7 @@ const loginUser = async (req, res = response) => {
       });
     }
 
-    // Intentar iniciar sesión
+    
     const loggedInUser = await userService.loginUsers(email, password);
 
     if (!loggedInUser) {
