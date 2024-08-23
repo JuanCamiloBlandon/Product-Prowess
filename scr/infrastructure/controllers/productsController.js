@@ -384,10 +384,21 @@ const getAllProducts = async (req, res = response) => {
 const getAllProductsPublic = async (req, res = response) => {
     try {
         const products = await Products.find({});
+
+        
+        const productsWithUsernames = await Promise.all(products.map(async (product) => {
+            const user = await Users.findById(product.userId).select('username  avatar'); 
+            return {
+                ...product._doc, 
+                publishedBy: user ? user.username : 'Desconocido',
+                publishedByAvatar: user ? user.avatar: null
+            };
+        }));
+
         res.status(200).json({
             ok: true,
             msg: {
-                products: products
+                products: productsWithUsernames
             }
         });
     } catch (error) {

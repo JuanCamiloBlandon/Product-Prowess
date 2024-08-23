@@ -21,6 +21,7 @@ import { DialogModule} from 'primeng/dialog';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DynamicDialogModule} from 'primeng/dynamicdialog';
 import { DialogService } from 'primeng/dynamicdialog';
+import { ChipModule} from 'primeng/chip';
 
 import {routes} from "./app.routes";
 
@@ -72,6 +73,7 @@ import { ProductdetailsComponent } from "./components/productdetails/productdeta
         DialogModule,
         ProgressSpinnerModule,
         DynamicDialogModule,
+        ChipModule,
         RouterModule.forRoot(routes),
         
     ],

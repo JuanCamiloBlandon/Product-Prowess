@@ -40,6 +40,21 @@
             <td>{{ formattedDate }}</td>
         </tr>
         <tr>
+            <th>Creado por</th>
+            <td>
+                <p-chip 
+                    *ngIf="creatorName && creatorAvatar" 
+                    [label]="creatorName" 
+                    [image]="creatorAvatar" 
+                    alt="Avatar image">
+                </p-chip>
+                <span *ngIf="!creatorAvatar">{{creatorName}}</span>
+                <div class="id-container">
+                    <span class="follow pi pi-plus" (click)="handleFollowClick()" ></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
             <td >
                 <div class="id-container">
                     <span class="button-text" (click)="handleCommentsClick()" >Comentar</span>

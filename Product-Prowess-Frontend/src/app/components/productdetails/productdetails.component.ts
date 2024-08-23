@@ -13,6 +13,8 @@ export class ProductdetailsComponent implements OnInit{
   product: any;
   displayId: string = '';
   formattedDate: string = '';
+  creatorName: string = '';
+  creatorAvatar: string = '';
 
   constructor(
     public config: DynamicDialogConfig,
@@ -24,6 +26,9 @@ export class ProductdetailsComponent implements OnInit{
         this.product = this.config.data.product;
         this.displayId = this.generateDisplayId(this.product._id);
         this.formattedDate = this.formatDate(this.product.createdAt);
+
+        this.creatorName = this.product.publishedBy || 'Desconocido';
+        this.creatorAvatar = this.product.publishedByAvatar;
       }
   }
 
@@ -61,5 +66,10 @@ export class ProductdetailsComponent implements OnInit{
   handleCommentsClick(): void {
     this.messageService.add({ severity: 'warn', detail: 'Para comentar el producto, debes iniciar sesión.' })
   }
+
+  handleFollowClick(): void {
+    this.messageService.add({ severity: 'warn', detail: 'Para poder segurilo(a), debes iniciar sesión.' })
+  }
+
 
 }

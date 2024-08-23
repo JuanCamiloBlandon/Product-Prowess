@@ -50,6 +50,16 @@
     color: #fff;
 }
 
+.follow{
+    
+    position: absolute;
+    right: 4px;
+    top: -19px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #fff;
+}
+
 .comments-icon{
     position: absolute;
     right: 65px;
