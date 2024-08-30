@@ -9,6 +9,17 @@
                 <p-toast />
                 <p-button (click)="show()" icon="pi pi-search" label="Selecciona un producto" pRipple />
             </div>
+            <div class="calendar-container calendar">
+                <label for="buttondisplay" class="font-bold block mb-2">Selecciona una fecha</label>
+                <p-calendar 
+                    [(ngModel)]="date1" 
+                    [showIcon]="true" 
+                    inputId="buttondisplay" 
+                    [showOnFocus]="false"
+                    class="small-calendar">
+                </p-calendar>
+            </div>
+            <button *ngIf="date1">Buscar</button>
         </div>
     </div>
 </div>

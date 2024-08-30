@@ -158,3 +158,47 @@ h2{
   height: 41px;
   width: 290px;
 }
+
+button {
+  margin-right: 5px;
+  padding: 10px 20px;
+  position: relative;
+  font-size: 1em;
+  cursor: pointer;
+  background-color: #C70039;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  margin: 0 10px;
+  font-family: "Kanit", sans-serif;
+  width: 84px;
+  right: -165px;
+  top: -15px;
+}
+
+::ng-deep .calendar{
+  position: relative;
+  top: 30px;
+  border-radius: 5px;
+  width: 170px !important;  
+}
+
+
+::ng-deep .small-calendar .p-datepicker {
+  transform: scale(0.8) !important;
+  transform-origin: center !important;
+}
+
+::ng-deep .small-calendar .p-inputtext {
+  font-size: 0.85rem !important;
+  padding: 0.25rem 0.5rem !important;
+}
+
+::ng-deep .small-calendar .p-datepicker-header {
+  padding: 0.25rem !important;
+}
+
+::ng-deep .small-calendar .p-datepicker-calendar td {
+  font-size: 0.75rem !important;
+  padding: 0.25rem !important;
+}

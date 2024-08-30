@@ -16,6 +16,7 @@ export class SearchModalComponent implements OnInit {
 
   products: Product[] = [];
   ref: DynamicDialogRef | undefined;
+  date1: Date | undefined;
   
   constructor(
     private dialogService: DialogService,
