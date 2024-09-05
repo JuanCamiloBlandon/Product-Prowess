@@ -37,7 +37,6 @@ const createProduct = async (req, res = response) => {
               }
         });
     } catch (error) {
-        console.error('Error al crear producto:', error.message);
         if (error.message === 'Error: Product already exists') {
             return res.status(409).json({
                 ok: false,

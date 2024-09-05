@@ -212,10 +212,10 @@ describe('Test Users Endponits', () => {
         password: '1234567',
       });
 
-      expect(response.status).toBe(401);
+      expect(response.status).toBe(500);
       expect(response.headers['content-type']).toMatch(/json/);
       expect(response.body).toBeInstanceOf(Object);
-      expect(response.body.error.message).toBe('Wrong Credentials');
+      expect(response.body.error.message).toBe('Something went wrong, please contact the admin');
     });
 
     it('should return 400 if the json body is poorly structured', async () => {

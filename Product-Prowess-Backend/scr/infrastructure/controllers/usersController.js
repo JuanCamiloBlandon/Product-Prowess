@@ -110,7 +110,7 @@ const loginUser = async (req, res = response) => {
       return res.status(404).json({
         ok: false,
         error: {
-          message: 'User not found. Please check your email or register an account.'
+          message: 'You are not registered'
         }
       });
     }

@@ -68,7 +68,7 @@ describe('Test Products Endponits', () => {
       expect(response.body).toBeInstanceOf(Object);
     });
 
-    it('should return 404 if product already exists', async () => {
+    it('should return 409 if product already exists', async () => {
       const response = await request(app)
       .post('/api/v1/products/')
       .set('Authorization', `Bearer ${token}`) // Agrega el token de autorización al encabezado
@@ -79,7 +79,7 @@ describe('Test Products Endponits', () => {
         tags: ['Hogar', 'Electrodomesticos']
       });
 
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(409);
       expect(response.headers['content-type']).toMatch(/json/);
       expect(response.body).toBeInstanceOf(Object);
     });
