@@ -1,0 +1,12 @@
+
+services:
+  backend:
+    build:
+      context: ./Product-Prowess-Backend
+    ports:
+      - "3000:3000" 
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./Product-Prowess-Backend:/app
+    command: ["npm", "start"]
