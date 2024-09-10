@@ -22,7 +22,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir('Product-Prowess-Backend') {
+                dir('Product-Prowess-Backend') {  
                     bat 'npm run build'
                 }
             }
