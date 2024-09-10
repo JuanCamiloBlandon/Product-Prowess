@@ -4,7 +4,11 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/JuanCamiloBlandon/Product-Prowess.git'
+                script {
+                    sh 'echo "Checking out branch..."'
+                    sh 'git branch -a'
+                }
+                git branch: 'feature/alexis', url: 'https://github.com/JuanCamiloBlandon/Product-Prowess.git'
             }
         }
         
