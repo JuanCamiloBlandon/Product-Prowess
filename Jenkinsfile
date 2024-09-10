@@ -5,8 +5,8 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    sh 'echo "Checking out branch..."'
-                    sh 'git branch -a'
+                    bat 'echo "Checking out branch..."'
+                    bat 'git branch -a'
                 }
                 git branch: 'feature/alexis', url: 'https://github.com/JuanCamiloBlandon/Product-Prowess.git'
             }
@@ -15,7 +15,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 dir('Product-Prowess-Backend') {
-                    sh 'npm install'
+                    bat 'npm install'
                 }
             }
         }
@@ -23,7 +23,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('Product-Prowess-Backend') {
-                    sh 'npm run build'
+                    bat 'npm run build'
                 }
             }
         }
