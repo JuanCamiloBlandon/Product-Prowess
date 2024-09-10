@@ -15,6 +15,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 dir('Product-Prowess-Backend') {
+                    bat 'npm cache clean --force'
                     bat 'npm install'
                 }
             }
@@ -22,7 +23,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir('Product-Prowess-Backend') {  
+                dir('Product-Prowess-Backend') {
                     bat 'npm run build'
                 }
             }
